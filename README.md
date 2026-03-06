@@ -31,7 +31,7 @@ Try it now → [your-deployed-link]
 ## Quickstart
 
 ```bash
-git clone https://github.com/yourusername/herrights-ai
+git clone https://github.com/codeNimra/herrights-ai
 cd herrights-ai
 cp .env.example .env        # Add your Anthropic API key
 npm install
@@ -55,4 +55,4 @@ User Input → App.jsx (stage manager)
 
 ## Disclaimer
 
-HerRights AI provides general legal information only — not legal advice. Always consult a qualified lawyer for your specific situation.
+HerRights AI provides general legal information only not legal advice. Always consult a qualified lawyer for your specific situation.
