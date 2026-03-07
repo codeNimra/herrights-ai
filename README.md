@@ -1,10 +1,10 @@
-# 🌸 HerRights VR
+## 🌸 HerRights VR
 
 > An immersive WebXR experience that puts women's legal rights in their hands literally.
 
-**Live Demo:** [your-site.netlify.app](https://your-site.netlify.app)
+**Live Demo:** (https://her-rights.netlify.app/)
 **Track:** AR / VR / XR
-**Event:** #75HER Challenge Hackathon — CreateHER Fest 2026
+**Event:** #75HER Challenge Hackathon CreateHER Fest 2026
 
 ---
 
@@ -12,7 +12,6 @@
 
 | | |
 |---|---|
-
 | **User** | Women and marginalized people who face legal situations (workplace, safety, housing, immigration, reproductive rights) but lack access to clear, plain-language legal information |
 | **Problem** | Legal information is written in jargon designed for lawyers not for the everyday person who urgently needs to understand their rights |
 | **Constraints** | Must work without login, without an API key, without installation accessible on any device including VR headsets |
@@ -24,7 +23,7 @@
 
 **Know your rights step inside them.**
 HerRights VR is an immersive 3D garden where women and marginalized communities walk through their legal rights with a built-in AI chatbot that answers questions in plain language, no login or API key required.
-Try it now → [your-site.netlify.app](https://her-rights.netlify.app/)
+Try it now → (https://her-rights.netlify.app/)
 
 ---
 
@@ -50,7 +49,6 @@ Each panel opens a side panel with:
 
 | Goal | How |
 |---|---|
-
 | **SDG 5  Gender Equality** | Closing the legal knowledge gap specifically for women and marginalized communities |
 | **SDG 16  Justice & Strong Institutions** | Making legal systems understandable and accessible to everyone, not just those who can afford lawyers |
 
@@ -60,7 +58,6 @@ Each panel opens a side panel with:
 
 | Technology | Purpose |
 |---|---|
-
 | A-Frame 1.4.2 | WebXR 3D scene, VR headset support |
 | HTML / CSS / JavaScript | UI, chatbot logic, rights content |
 | Google Fonts | Playfair Display + DM Sans typography |
@@ -108,7 +105,6 @@ See [DECISIONS.md](./DECISIONS.md) for the full decision log.
 
 | Decision | Choice | Reason |
 |---|---|---|
-
 | Single HTML file | No framework | Zero setup, drag-and-drop deploy, works offline |
 | A-Frame for 3D | WebXR standard | Works in browser AND VR headsets with no install |
 | Rule-based chatbot | No API key | Fully free, works offline, no billing required |
@@ -128,11 +124,11 @@ See [DECISIONS.md](./DECISIONS.md) for the full decision log.
 
 ## 📜 License
 
-MIT License — see [LICENSE](./LICENSE)
+MIT License see [LICENSE](./LICENSE)
 
 ---
 
-## 🙏 Credits
+##  Credits
 
 - 3D Framework: [A-Frame](https://aframe.io) by Mozilla
 - Fonts: [Google Fonts](https://fonts.google.com) Playfair Display, DM Sans
