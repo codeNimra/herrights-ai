@@ -1,5 +1,3 @@
-## herrights-ai
-
 ## ⚖️ HerRights AI
 
 > Plain-language legal rights assistant for women and marginalized communities.
@@ -13,14 +11,14 @@
 
 ## 3-Line Pitch
 
-**Know your rights — without a law degree.**
+**Know your rights without a law degree.**
 HerRights AI translates legal jargon into plain language, giving women and marginalized communities the clarity to understand their options and take action.
 Try it now → [your-deployed-link]
 
 ## SDG Alignment
 
-- 🟣 **SDG 5** — Gender Equality: Closing the legal knowledge gap for women
-- ⚖️ **SDG 16** — Justice & Strong Institutions: Making legal systems accessible to all
+- 🟣 **SDG 5** Gender Equality: Closing the legal knowledge gap for women
+- ⚖️ **SDG 16** Justice & Strong Institutions: Making legal systems accessible to all
 
 ## Tech Stack
 
