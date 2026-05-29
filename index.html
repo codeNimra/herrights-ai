@@ -8,20 +8,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --rose: #e8547a;
-      --gold: #f0a500;
-      --cream: #fff8f0;
-      --lilac: #c084fc;
-      --deep: #3d1a4a;
-      --text: #2d0a3a;
+      --twilight: #0f172a;
+      --lavender: #9333ea;
+      --white: #ffffff;
+      --silver: #f1f5f9;
+      --slate: #1e293b;
+      --purple-dark: #6d28d9;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--cream); overflow: hidden; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--twilight); overflow: hidden; }
 
     /* SPLASH */
     #splash {
       position: fixed; inset: 0; z-index: 200;
-      background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 30%, #f3e8ff 60%, #fff8e1 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #2d1b4e 100%);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center; padding: 24px;
@@ -30,54 +30,54 @@
     #splash.hidden { opacity: 0; visibility: hidden; }
     .splash-flowers { font-size: 42px; letter-spacing: 8px; margin-bottom: 16px; animation: sway 3s ease-in-out infinite; }
     @keyframes sway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
-    .splash-title { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); color:var(--deep); font-weight:700; line-height:1.1; margin-bottom:6px; }
-    .splash-title em { color:var(--rose); font-style:italic; }
-    .splash-tagline { font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:16px; font-weight:500; }
-    .splash-desc { font-size:15px; color:#7a4a8a; line-height:1.7; max-width:420px; margin-bottom:32px; }
+    .splash-title { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); color:var(--white); font-weight:700; line-height:1.1; margin-bottom:6px; }
+    .splash-title em { color:var(--lavender); font-style:italic; }
+    .splash-tagline { font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--lavender); margin-bottom:16px; font-weight:500; }
+    .splash-desc { font-size:15px; color:var(--silver); line-height:1.7; max-width:420px; margin-bottom:32px; }
     .controls-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px; }
-    .ctrl { background:white; border-radius:10px; padding:10px 16px; font-size:12px; color:#7a4a8a; box-shadow:0 2px 12px rgba(232,84,122,0.1); border:1px solid rgba(232,84,122,0.15); }
-    .ctrl strong { display:block; color:var(--deep); font-size:13px; margin-bottom:2px; }
-    .enter-btn { background:linear-gradient(135deg,var(--rose),#f06292); color:white; border:none; border-radius:50px; padding:16px 44px; font-size:16px; font-weight:600; font-family:'DM Sans',san[...]
-    .enter-btn:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(232,84,122,0.5); }
-    .iwd-badge { margin-top:20px; background:linear-gradient(135deg,var(--rose),var(--lilac)); color:white; border-radius:20px; padding:6px 18px; font-size:12px; letter-spacing:1px; text-transform[...]
+    .ctrl { background:var(--slate); border-radius:10px; padding:10px 16px; font-size:12px; color:var(--silver); box-shadow:0 2px 12px rgba(147,51,234,0.15); border:1px solid var(--lavender); }
+    .ctrl strong { display:block; color:var(--lavender); font-size:13px; margin-bottom:2px; }
+    .enter-btn { background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border:none; border-radius:50px; padding:16px 44px; font-size:16px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.3s; }
+    .enter-btn:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(147,51,234,0.4); }
+    .iwd-badge { margin-top:20px; background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border-radius:20px; padding:6px 18px; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
 
     /* HUD */
-    #hud { position:fixed; top:0; left:0; right:0; z-index:100; display:none; align-items:center; justify-content:space-between; padding:14px 24px; background:linear-gradient(to bottom,rgba(255,24[...]
+    #hud { position:fixed; top:0; left:0; right:0; z-index:100; display:none; align-items:center; justify-content:space-between; padding:14px 24px; background:linear-gradient(to bottom,rgba(15,23,42,0.95),rgba(30,41,59,0.8)); border-bottom:1px solid var(--lavender); }
     .hud-brand { display:flex; align-items:center; gap:10px; }
-    .hud-orb { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--rose),var(--lilac)); display:flex; align-items:center; justify-content:center; font-size:16px; bo[...]
-    .hud-name { font-family:'Playfair Display',serif; font-size:17px; color:var(--deep); font-weight:700; }
-    .hud-sub { font-size:10px; color:var(--rose); letter-spacing:2px; text-transform:uppercase; }
-    .hud-hint { font-size:12px; color:#b07ab0; }
+    .hud-orb { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--lavender),#a855f7); display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 0 16px rgba(147,51,234,0.6); }
+    .hud-name { font-family:'Playfair Display',serif; font-size:17px; color:var(--white); font-weight:700; }
+    .hud-sub { font-size:10px; color:var(--lavender); letter-spacing:2px; text-transform:uppercase; }
+    .hud-hint { font-size:12px; color:var(--silver); }
 
     /* NAV */
     #topic-nav { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:none; gap:8px; z-index:100; flex-wrap:wrap; justify-content:center; padding:0 16px; }
-    .t-pill { background:white; border:1.5px solid rgba(232,84,122,0.25); border-radius:50px; padding:7px 16px; color:#9a5a8a; font-size:12px; cursor:pointer; box-shadow:0 2px 12px rgba(0,0,0,0.06[...]
-    .t-pill:hover,.t-pill.active { background:linear-gradient(135deg,var(--rose),#f06292); color:white; border-color:transparent; box-shadow:0 4px 16px rgba(232,84,122,0.35); }
+    .t-pill { background:var(--slate); border:1.5px solid var(--lavender); border-radius:50px; padding:7px 16px; color:var(--silver); font-size:12px; cursor:pointer; box-shadow:0 2px 12px rgba(147,51,234,0.1); transition:all 0.2s; }
+    .t-pill:hover,.t-pill.active { background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border-color:transparent; box-shadow:0 4px 16px rgba(147,51,234,0.4); }
 
     /* SIDE PANEL */
-    #side-panel { position:fixed; top:0; right:0; bottom:0; z-index:150; width:min(480px,100vw); background:white; display:flex; flex-direction:column; transform:translateX(105%); transition:trans[...]
+    #side-panel { position:fixed; top:0; right:0; bottom:0; z-index:150; width:min(480px,100vw); background:var(--slate); display:flex; flex-direction:column; transform:translateX(105%); transition:transform 0.3s ease; box-shadow:-4px 0 20px rgba(0,0,0,0.3); }
     #side-panel.open { transform:translateX(0); }
-    .panel-top { padding:20px 22px 16px; background:linear-gradient(135deg,#fff0f5,#f3e8ff); border-bottom:1px solid rgba(232,84,122,0.1); flex-shrink:0; }
+    .panel-top { padding:20px 22px 16px; background:linear-gradient(135deg,var(--twilight),var(--slate)); border-bottom:1px solid var(--lavender); flex-shrink:0; }
     .panel-top-row { display:flex; align-items:flex-start; justify-content:space-between; }
     .panel-icon-wrap { font-size:32px; margin-right:12px; }
-    .panel-title { font-family:'Playfair Display',serif; font-size:20px; color:var(--deep); font-weight:700; }
-    .panel-subtitle { font-size:12px; color:#b07ab0; margin-top:2px; }
-    .panel-close { background:rgba(232,84,122,0.1); border:none; border-radius:50%; width:32px; height:32px; font-size:18px; color:var(--rose); cursor:pointer; display:flex; align-items:center; ju[...]
-    .panel-close:hover { background:rgba(232,84,122,0.2); }
-    .panel-tabs { display:flex; border-bottom:1px solid #f0e0f0; flex-shrink:0; }
-    .tab-btn { flex:1; padding:12px; font-size:13px; font-weight:500; background:none; border:none; cursor:pointer; color:#b07ab0; border-bottom:2px solid transparent; transition:all 0.2s; font-fa[...]
-    .tab-btn.active { color:var(--rose); border-bottom-color:var(--rose); }
+    .panel-title { font-family:'Playfair Display',serif; font-size:20px; color:var(--white); font-weight:700; }
+    .panel-subtitle { font-size:12px; color:var(--silver); margin-top:2px; }
+    .panel-close { background:rgba(147,51,234,0.15); border:none; border-radius:50%; width:32px; height:32px; font-size:18px; color:var(--lavender); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .panel-close:hover { background:rgba(147,51,234,0.3); }
+    .panel-tabs { display:flex; border-bottom:1px solid var(--lavender); flex-shrink:0; }
+    .tab-btn { flex:1; padding:12px; font-size:13px; font-weight:500; background:none; border:none; cursor:pointer; color:var(--silver); border-bottom:2px solid transparent; transition:all 0.2s; }
+    .tab-btn.active { color:var(--lavender); border-bottom-color:var(--lavender); }
 
     /* RIGHTS TAB */
     #tab-rights { flex:1; overflow-y:auto; padding:16px; }
-    .right-card { background:#fff8fb; border:1px solid rgba(232,84,122,0.12); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
-    .right-card-title { color:var(--rose); font-size:13px; font-weight:600; margin-bottom:5px; }
-    .right-card-text { color:#5a3a6a; font-size:13px; line-height:1.65; }
+    .right-card { background:rgba(147,51,234,0.08); border:1px solid rgba(147,51,234,0.25); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+    .right-card-title { color:var(--lavender); font-size:13px; font-weight:600; margin-bottom:5px; }
+    .right-card-text { color:var(--silver); font-size:13px; line-height:1.65; }
     .resources-section { margin-top:12px; }
-    .resources-label { font-size:11px; color:#c09ab0; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+    .resources-label { font-size:11px; color:var(--lavender); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
     .resource-chips { display:flex; gap:6px; flex-wrap:wrap; }
-    .resource-chip { background:linear-gradient(135deg,rgba(232,84,122,0.08),rgba(192,132,252,0.08)); border:1px solid rgba(232,84,122,0.2); border-radius:20px; padding:5px 12px; color:var(--rose)[...]
-    .disclaimer { margin-top:14px; padding:10px 14px; background:#fff8f0; border-left:3px solid var(--gold); border-radius:4px; color:#9a7a5a; font-size:12px; line-height:1.5; }
+    .resource-chip { background:rgba(147,51,234,0.12); border:1px solid var(--lavender); border-radius:20px; padding:5px 12px; color:var(--lavender); font-size:12px; }
+    .disclaimer { margin-top:14px; padding:10px 14px; background:rgba(147,51,234,0.1); border-left:3px solid var(--lavender); border-radius:4px; color:var(--silver); font-size:12px; line-height:1.5; }
 
     /* CHAT TAB */
     #tab-chat { flex:1; display:none; flex-direction:column; overflow:hidden; }
@@ -85,29 +85,29 @@
     .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
     .msg { display:flex; gap:8px; }
     .msg.user { flex-direction:row-reverse; }
-    .msg-avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; margin-top:2px; background:linear-gradient(13[...]
-    .msg.user .msg-avatar { background:linear-gradient(135deg,var(--gold),#f06292); }
+    .msg-avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; margin-top:2px; background:linear-gradient(135deg,#6d28d9,var(--lavender)); box-shadow:0 0 8px rgba(147,51,234,0.4); }
+    .msg.user .msg-avatar { background:linear-gradient(135deg,var(--lavender),#a855f7); }
     .msg-bubble { max-width:82%; padding:10px 14px; border-radius:16px; font-size:13px; line-height:1.6; }
-    .msg.bot .msg-bubble { background:#fff0f5; border:1px solid rgba(232,84,122,0.15); border-radius:4px 16px 16px 16px; color:var(--text); }
-    .msg.user .msg-bubble { background:linear-gradient(135deg,var(--rose),#f06292); color:white; border-radius:16px 4px 16px 16px; }
+    .msg.bot .msg-bubble { background:var(--slate); border:1px solid var(--lavender); border-radius:4px 16px 16px 16px; color:var(--silver); }
+    .msg.user .msg-bubble { background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border-radius:16px 4px 16px 16px; }
     .typing { display:flex; gap:4px; align-items:center; padding:4px 0; }
-    .typing span { width:7px; height:7px; border-radius:50%; background:var(--rose); animation:bounce 1.2s ease-in-out infinite; }
+    .typing span { width:7px; height:7px; border-radius:50%; background:var(--lavender); animation:bounce 1.2s ease-in-out infinite; }
     .typing span:nth-child(2){animation-delay:0.2s} .typing span:nth-child(3){animation-delay:0.4s}
     @keyframes bounce { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
-    .chat-input-row { padding:12px 14px; border-top:1px solid #f0e0f0; display:flex; gap:8px; align-items:flex-end; flex-shrink:0; }
-    .chat-input { flex:1; border:1.5px solid rgba(232,84,122,0.2); border-radius:20px; padding:10px 16px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text); background:#fff8fb; o[...]
-    .chat-input:focus { border-color:var(--rose); }
-    .chat-input::placeholder { color:#c09ab0; }
-    .chat-send { background:linear-gradient(135deg,var(--rose),#f06292); border:none; border-radius:50%; width:38px; height:38px; color:white; font-size:16px; cursor:pointer; flex-shrink:0; displ[...]
-    .chat-send:hover { transform:scale(1.1); }
+    .chat-input-row { padding:12px 14px; border-top:1px solid var(--lavender); display:flex; gap:8px; align-items:flex-end; flex-shrink:0; }
+    .chat-input { flex:1; border:1.5px solid var(--lavender); border-radius:20px; padding:10px 16px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--white); background:rgba(147,51,234,0.08); transition:all 0.2s; }
+    .chat-input:focus { border-color:var(--lavender); background:rgba(147,51,234,0.12); box-shadow:0 0 12px rgba(147,51,234,0.3); outline:none; }
+    .chat-input::placeholder { color:rgba(241,245,249,0.5); }
+    .chat-send { background:linear-gradient(135deg,var(--lavender),#a855f7); border:none; border-radius:50%; width:38px; height:38px; color:var(--white); font-size:16px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.2s; box-shadow:0 4px 12px rgba(147,51,234,0.3); }
+    .chat-send:hover { transform:scale(1.1); box-shadow:0 6px 16px rgba(147,51,234,0.4); }
     .chat-send:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
     .suggestions { padding:0 14px 10px; display:flex; gap:6px; flex-wrap:wrap; }
-    .sug-chip { background:#fff0f5; border:1px solid rgba(232,84,122,0.2); border-radius:20px; padding:5px 12px; color:var(--rose); font-size:12px; cursor:pointer; transition:all 0.15s; }
-    .sug-chip:hover { background:var(--rose); color:white; }
+    .sug-chip { background:rgba(147,51,234,0.12); border:1px solid var(--lavender); border-radius:20px; padding:5px 12px; color:var(--silver); font-size:12px; cursor:pointer; transition:all 0.15s; }
+    .sug-chip:hover { background:var(--lavender); color:var(--white); }
 
     /* CROSSHAIR */
     #xhair { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:50; width:18px; height:18px; display:none; }
-    #xhair::before,#xhair::after { content:''; position:absolute; background:rgba(232,84,122,0.7); border-radius:2px; }
+    #xhair::before,#xhair::after { content:''; position:absolute; background:rgba(147,51,234,0.7); border-radius:2px; }
     #xhair::before { width:2px; height:100%; left:50%; transform:translateX(-50%); }
     #xhair::after { height:2px; width:100%; top:50%; transform:translateY(-50%); }
   </style>
@@ -195,131 +195,152 @@
 
 <!-- A-FRAME SCENE -->
 <a-scene id="scene" style="display:none"
-  background="color:#ffe4f0"
-  fog="type:exponential;color:#ffd6eb;density:0.018"
+  background="color:#0a0e27"
+  fog="type:exponential;color:#0f172a;density:0.018"
   vr-mode-ui="enabled:true">
 
-  <a-light type="ambient" color="#ffe0f0" intensity="1.2"></a-light>
-  <a-light type="directional" color="#fff0c0" intensity="1.2" position="2 5 2"></a-light>
-  <a-light type="point" color="#f9a8d4" intensity="1.5" position="0 6 0" distance="30"></a-light>
-  <a-light type="point" color="#fcd34d" intensity="0.8" position="5 4 5" distance="20"></a-light>
-  <a-light type="point" color="#c084fc" intensity="0.6" position="-5 4 -5" distance="20"></a-light>
+  <a-light type="ambient" color="#1a2a5a" intensity="0.8"></a-light>
+  <a-light type="directional" color="#9333ea" intensity="0.9" position="2 5 2"></a-light>
+  <a-light type="point" color="#a855f7" intensity="1.2" position="0 6 0" distance="30"></a-light>
+  <a-light type="point" color="#7c3aed" intensity="0.6" position="5 4 5" distance="20"></a-light>
+  <a-light type="point" color="#6d28d9" intensity="0.5" position="-5 4 -5" distance="20"></a-light>
 
   <!-- Ground -->
-  <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="80" material="color:#fce7f3;roughness:0.9"></a-plane>
-  <a-plane position="0 0.01 0" rotation="-90 0 0" width="80" height="80" material="color:#fbb6ce;opacity:0.15;transparent:true"></a-plane>
+  <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="80" material="color:#1e293b;roughness:0.9"></a-plane>
+  <a-plane position="0 0.01 0" rotation="-90 0 0" width="80" height="80" material="color:#0f172a;opacity:0.15;transparent:true"></a-plane>
 
   <!-- Circular path -->
-  <a-torus position="0 0.02 0" radius="7" radius-tubular="0.5" material="color:#fce4ec;opacity:0.8" rotation="-90 0 0"></a-torus>
+  <a-torus position="0 0.02 0" radius="7" radius-tubular="0.5" material="color:#9333ea;opacity:0.6;emissive:#9333ea;emissiveIntensity:0.3" rotation="-90 0 0"></a-torus>
 
-  <!-- Sky -->
-  <a-sky color="#ffe0f0"></a-sky>
+  <!-- Sky with 360° smooth rotation -->
+  <a-sky color="#0a0e27" animation="property:rotation;from:0 0 0;to:0 360 0;dur:90000;easing:linear;loop:true"></a-sky>
 
   <!-- Central fountain -->
-  <a-cylinder position="0 0.2 0" radius="1.2" height="0.4" material="color:#f9a8d4;roughness:0.3;metalness:0.4;emissive:#f9a8d4;emissiveIntensity:0.2"></a-cylinder>
-  <a-cylinder position="0 0.8 0" radius="0.08" height="1.2" material="color:#f0a500;emissive:#f0a500;emissiveIntensity:0.6;metalness:0.8"></a-cylinder>
-  <a-sphere position="0 1.5 0" radius="0.22" material="color:#f0a500;emissive:#f0a500;emissiveIntensity:1"
+  <a-cylinder position="0 0.2 0" radius="1.2" height="0.4" material="color:#a855f7;roughness:0.3;metalness:0.4;emissive:#a855f7;emissiveIntensity:0.3"></a-cylinder>
+  <a-cylinder position="0 0.8 0" radius="0.08" height="1.2" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.7;metalness:0.8"></a-cylinder>
+  <a-sphere position="0 1.5 0" radius="0.22" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:1"
     animation="property:position;to:0 1.7 0;dur:1800;dir:alternate;loop:true;easing:easeInOutSine">
   </a-sphere>
-  <a-light type="point" color="#f0a500" intensity="2" position="0 1.5 0" distance="10"></a-light>
-  <a-text value="KNOW YOUR RIGHTS" position="0 2.6 0" align="center" color="#c2185b" width="7" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" animation="property:rotation;to:0 360 0;dur:25000;lo[...]
-  <a-text value="🌸 HerRights · IWD 2026 🌸" position="0 2.05 0" align="center" color="#e91e8c" width="5" animation="property:rotation;to:0 360 0;dur:25000;loop:true;easing:linear"></a-te[...]
+  <a-light type="point" color="#9333ea" intensity="2.5" position="0 1.5 0" distance="15"></a-light>
+  <a-text value="KNOW YOUR RIGHTS" position="0 2.6 0" align="center" color="#f1f5f9" width="7" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" animation="property:rotation;to:0 360 0;dur:25000;loop:true;easing:linear"></a-text>
+  <a-text value="🌸 HerRights · IWD 2026 🌸" position="0 2.05 0" align="center" color="#a855f7" width="5" animation="property:rotation;to:0 360 0;dur:25000;loop:true;easing:linear"></a-text>
 
   <!-- Floating petals -->
-  <a-sphere position="2 2.5 2" radius="0.12" material="color:#f9a8d4;emissive:#f9a8d4;emissiveIntensity:0.7;opacity:0.8" animation="property:position;from:2 2.5 2;to:2.5 4 1.5;dur:4000;dir:altern[...]
-  <a-sphere position="-3 3 1" radius="0.09" material="color:#c084fc;emissive:#c084fc;emissiveIntensity:0.7;opacity:0.8" animation="property:position;from:-3 3 1;to:-2.5 4.5 0.5;dur:3500;dir:alter[...]
-  <a-sphere position="1 4 -3" radius="0.1" material="color:#f0a500;emissive:#f0a500;emissiveIntensity:0.7;opacity:0.7" animation="property:position;from:1 4 -3;to:1.5 5.5 -2.5;dur:5000;dir:altern[...]
+  <a-sphere position="2 2.5 2" radius="0.12" material="color:#a855f7;emissive:#a855f7;emissiveIntensity:0.8;opacity:0.7" animation="property:position;from:2 2.5 2;to:2.5 4 1.5;dur:4000;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
+  <a-sphere position="-3 3 1" radius="0.09" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.8;opacity:0.7" animation="property:position;from:-3 3 1;to:-2.5 4.5 0.5;dur:3500;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
+  <a-sphere position="1 4 -3" radius="0.1" material="color:#7c3aed;emissive:#7c3aed;emissiveIntensity:0.8;opacity:0.7" animation="property:position;from:1 4 -3;to:1.5 5.5 -2.5;dur:5000;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
 
   <!-- Garden trees -->
-  <a-entity position="4 0 -4"><a-cylinder radius="0.12" height="2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#f9a8d4;opacity:0.9;emissive:#f9[...]
-  <a-entity position="-4 0 -4"><a-cylinder radius="0.12" height="2.2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.6 0" radius="0.85" material="color:#c084fc;opacity:0.9;emissive[...]
-  <a-entity position="4 0 4"><a-cylinder radius="0.12" height="1.8" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.75" material="color:#86efac;opacity:0.9;emissive:#[...]
-  <a-entity position="-4 0 4"><a-cylinder radius="0.12" height="2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#fcd34d;opacity:0.9;emissive:#fc[...]
+  <a-entity position="4 0 -4"><a-cylinder radius="0.12" height="2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#a855f7;opacity:0.8;emissive:#a855f7;emissiveIntensity:0.4"></a-sphere></a-entity>
+  <a-entity position="-4 0 -4"><a-cylinder radius="0.12" height="2.2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.6 0" radius="0.85" material="color:#9333ea;opacity:0.8;emissive:#9333ea;emissiveIntensity:0.4"></a-sphere></a-entity>
+  <a-entity position="4 0 4"><a-cylinder radius="0.12" height="1.8" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.75" material="color:#7c3aed;opacity:0.8;emissive:#7c3aed;emissiveIntensity:0.4"></a-sphere></a-entity>
+  <a-entity position="-4 0 4"><a-cylinder radius="0.12" height="2" material="color:#a5855a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#6d28d9;opacity:0.8;emissive:#6d28d9;emissiveIntensity:0.4"></a-sphere></a-entity>
 
   <!-- Outer ring -->
-  <a-torus position="0 0.05 0" radius="12" radius-tubular="0.08" rotation="-90 0 0" material="color:#f9a8d4;emissive:#f9a8d4;emissiveIntensity:0.3;opacity:0.5"></a-torus>
+  <a-torus position="0 0.05 0" radius="12" radius-tubular="0.08" rotation="-90 0 0" material="color:#a855f7;emissive:#a855f7;emissiveIntensity:0.3;opacity:0.4"></a-torus>
 
   <!-- PANEL 0: WORKPLACE -->
-  <a-entity id="p0" position="0 1.6 -7" class="clickable" data-topic="0" animation="property:position;to:0 1.8 -7;dur:2000;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#fce4ec;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#e8547a;emissive:#e8547a;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p0" position="0 1.6 -7" class="clickable" data-topic="0" dynamic-face animation="property:position;to:0 1.8 -7;dur:2000;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="💼" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="WORKPLACE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#c2185b" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Discrimination · Pay Equity&#xA;Harassment · Parental Leave" position="0 -0.32 0.05" align="center" width="3.8" color="#9c4a6a"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#e8547a" animation="property:components.material.material.opacity;to:0.1;dur:1000;dir:alternate;[...]
-    <a-light type="point" color="#e8547a" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="WORKPLACE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Discrimination · Pay Equity&#xA;Harassment · Parental Leave" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:1000;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- PANEL 1: SAFETY -->
-  <a-entity id="p1" position="6.06 1.6 -3.5" class="clickable" data-topic="1" animation="property:position;to:6.06 1.8 -3.5;dur:2200;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#e3f2fd;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#2196f3;emissive:#2196f3;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p1" position="6.06 1.6 -3.5" class="clickable" data-topic="1" dynamic-face animation="property:position;to:6.06 1.8 -3.5;dur:2200;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="🛡️" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="SAFETY &amp; PROTECTION" position="0 0.18 0.05" align="center" width="4.2" color="#1565c0" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Domestic Violence · Orders&#xA;Shelters · Emergency Help" position="0 -0.32 0.05" align="center" width="3.8" color="#4a6a9c"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#2196f3" animation="property:components.material.material.opacity;to:0.1;dur:1200;dir:alternate;[...]
-    <a-light type="point" color="#64b5f6" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="SAFETY &amp; PROTECTION" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Domestic Violence · Orders&#xA;Shelters · Emergency Help" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:1200;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- PANEL 2: HOUSING -->
-  <a-entity id="p2" position="6.06 1.6 3.5" class="clickable" data-topic="2" animation="property:position;to:6.06 1.8 3.5;dur:1900;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#e8f5e9;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#4caf50;emissive:#4caf50;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p2" position="6.06 1.6 3.5" class="clickable" data-topic="2" dynamic-face animation="property:position;to:6.06 1.8 3.5;dur:1900;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="🏠" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="HOUSING &amp; EVICTION" position="0 0.18 0.05" align="center" width="4.2" color="#2e7d32" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Tenant Rights · Eviction&#xA;Discrimination · Repairs" position="0 -0.32 0.05" align="center" width="3.8" color="#4a7c5a"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#4caf50" animation="property:components.material.material.opacity;to:0.1;dur:900;dir:alternate;l[...]
-    <a-light type="point" color="#81c784" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="HOUSING &amp; EVICTION" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Tenant Rights · Eviction&#xA;Discrimination · Repairs" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:900;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- PANEL 3: IMMIGRATION -->
-  <a-entity id="p3" position="0 1.6 7" class="clickable" data-topic="3" animation="property:position;to:0 1.8 7;dur:2400;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#fff8e1;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff9800;emissive:#ff9800;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p3" position="0 1.6 7" class="clickable" data-topic="3" dynamic-face animation="property:position;to:0 1.8 7;dur:2400;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="🌍" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="IMMIGRATION &amp; STATUS" position="0 0.18 0.05" align="center" width="4.2" color="#e65100" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Visa · Asylum · DACA&#xA;Deportation · Your Rights" position="0 -0.32 0.05" align="center" width="3.8" color="#9c6a3a"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff9800" animation="property:components.material.material.opacity;to:0.1;dur:1400;dir:alternate;[...]
-    <a-light type="point" color="#ffb74d" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="IMMIGRATION &amp; STATUS" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Visa · Asylum · DACA&#xA;Deportation · Your Rights" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:1400;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- PANEL 4: REPRODUCTIVE -->
-  <a-entity id="p4" position="-6.06 1.6 3.5" class="clickable" data-topic="4" animation="property:position;to:-6.06 1.8 3.5;dur:2100;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#fce4ec;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#e91e8c;emissive:#e91e8c;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p4" position="-6.06 1.6 3.5" class="clickable" data-topic="4" dynamic-face animation="property:position;to:-6.06 1.8 3.5;dur:2100;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="🌸" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="REPRODUCTIVE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#880e4f" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Healthcare · Parental Rights&#xA;Custody · Body Autonomy" position="0 -0.32 0.05" align="center" width="3.8" color="#9c4a7a"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#e91e8c" animation="property:components.material.material.opacity;to:0.1;dur:1100;dir:alternate;[...]
-    <a-light type="point" color="#f48fb1" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="REPRODUCTIVE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Healthcare · Parental Rights&#xA;Custody · Body Autonomy" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:1100;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- PANEL 5: GENERAL -->
-  <a-entity id="p5" position="-6.06 1.6 -3.5" class="clickable" data-topic="5" animation="property:position;to:-6.06 1.8 -3.5;dur:2300;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#f3e8ff;opacity:0.5;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#ffffff;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9c27b0;emissive:#9c27b0;emissiveIntensity:0.5"></a-plane>
+  <a-entity id="p5" position="-6.06 1.6 -3.5" class="clickable" data-topic="5" dynamic-face animation="property:position;to:-6.06 1.8 -3.5;dur:2300;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#9333ea;opacity:0.2;transparent:true"></a-plane>
+    <a-plane width="3.2" height="2.3" material="color:#1e293b;roughness:0.5;opacity:0.95"></a-plane>
+    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#9333ea;emissive:#9333ea;emissiveIntensity:0.6"></a-plane>
     <a-text value="⚖️" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="GENERAL LEGAL RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#6a1b9a" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Due Process · Equal Rights&#xA;Access to Justice · Courts" position="0 -0.32 0.05" align="center" width="3.8" color="#7a4a9c"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9c27b0" animation="property:components.material.material.opacity;to:0.1;dur:1600;dir:alternate;[...]
-    <a-light type="point" color="#ce93d8" intensity="0.8" distance="5" position="0 0 1"></a-light>
+    <a-text value="GENERAL LEGAL RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#f1f5f9" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
+    <a-text value="Due Process · Equal Rights&#xA;Access to Justice · Courts" position="0 -0.32 0.05" align="center" width="3.8" color="#cbd5e1"></a-text>
+    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#9333ea" animation="property:components.material.material.opacity;to:0.1;dur:1600;dir:alternate;loop:true;easing:easeInOutSine"></a-text>
+    <a-light type="point" color="#9333ea" intensity="1" distance="5" position="0 0 1"></a-light>
   </a-entity>
 
   <!-- Camera -->
   <a-entity id="rig" position="0 0 0">
     <a-camera id="cam" look-controls="pointerLockEnabled:false" wasd-controls="enabled:true;acceleration:20" position="0 1.6 0">
-      <a-cursor color="#e8547a" fuse="false" raycaster="objects:.clickable" opacity="0.7"></a-cursor>
+      <a-cursor color="#9333ea" fuse="false" raycaster="objects:.clickable" opacity="0.7"></a-cursor>
     </a-camera>
   </a-entity>
 </a-scene>
 
 <script>
+// Register custom 'dynamic-face' component for panel orientation
+AFRAME.registerComponent('dynamic-face', {
+  tick: function() {
+    const camera = document.getElementById('cam');
+    if (!camera) return;
+    
+    const cameraPos = camera.getAttribute('position');
+    const entityPos = this.el.getAttribute('position');
+    
+    // Calculate direction from panel to camera
+    const dx = cameraPos.x - entityPos.x;
+    const dz = cameraPos.z - entityPos.z;
+    
+    // Calculate rotation to face camera (Y-axis only to prevent spinning)
+    const angle = Math.atan2(dx, dz) * (180 / Math.PI);
+    
+    // Apply rotation
+    this.el.setAttribute('rotation', `0 ${angle} 0`);
+  }
+});
+
 const TOPICS = [
   { id:0, icon:"💼", title:"Workplace Rights", subtitle:"Your rights at work pay, dignity, and safety",
     rights:[
@@ -404,6 +425,96 @@ const SUGGESTIONS = [
   ["What is due process?","Can I refuse a police search?","How do I find free legal help?","I want to file a complaint"],
 ];
 
+// ===== LOCALSTORAGE CHAT PERSISTENCE =====
+const STORAGE_KEY = 'herRights_chatHistory';
+
+// Save chat history to localStorage
+function saveChatHistory() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory));
+  } catch (e) {
+    console.error('Failed to save chat history:', e);
+  }
+}
+
+// Load chat history from localStorage
+function loadChatHistory() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      chatHistory = JSON.parse(saved);
+      return true;
+    }
+  } catch (e) {
+    console.error('Failed to load chat history:', e);
+  }
+  return false;
+}
+
+// ===== AUDIO NARRATION (Web Speech API) =====
+let currentUtterance = null;
+const synth = window.speechSynthesis;
+
+function createAudioButton(cardElement, text) {
+  const button = document.createElement('button');
+  button.className = 'listen-btn';
+  button.innerHTML = '🔊 Listen';
+  button.style.marginTop = '8px';
+  button.style.padding = '6px 12px';
+  button.style.background = 'linear-gradient(135deg, #9333ea, #a855f7)';
+  button.style.color = '#ffffff';
+  button.style.border = 'none';
+  button.style.borderRadius = '6px';
+  button.style.fontSize = '12px';
+  button.style.cursor = 'pointer';
+  button.style.fontWeight = '500';
+  button.style.transition = 'all 0.2s';
+  button.style.width = '100%';
+  
+  button.addEventListener('mouseover', () => {
+    button.style.transform = 'translateY(-2px)';
+    button.style.boxShadow = '0 4px 12px rgba(147, 51, 234, 0.4)';
+  });
+  button.addEventListener('mouseout', () => {
+    button.style.transform = 'translateY(0)';
+    button.style.boxShadow = 'none';
+  });
+  
+  button.addEventListener('click', () => {
+    if (synth.speaking && currentUtterance) {
+      synth.cancel();
+      button.innerHTML = '🔊 Listen';
+      currentUtterance = null;
+    } else {
+      speakText(text, button);
+    }
+  });
+  
+  return button;
+}
+
+function speakText(text, button) {
+  if (synth.speaking) {
+    synth.cancel();
+  }
+  
+  currentUtterance = new SpeechSynthesisUtterance(text);
+  currentUtterance.rate = 0.95;
+  currentUtterance.pitch = 1;
+  currentUtterance.volume = 1;
+  
+  currentUtterance.onstart = () => {
+    button.innerHTML = '⏸ Stop';
+  };
+  
+  currentUtterance.onend = () => {
+    button.innerHTML = '🔊 Listen';
+    currentUtterance = null;
+  };
+  
+  synth.speak(currentUtterance);
+}
+
 // CHATBOT (no API key)
 function getBotReply(msg, topic) {
   const m = msg.toLowerCase().trim();
@@ -411,28 +522,28 @@ function getBotReply(msg, topic) {
   const thanks = ["thank","thanks","thx","appreciate","helpful","great","good"];
 
   if (greetings.some(g => m.startsWith(g) || m === g))
-    return `Hi there! 💛 I'm HerRights AI. I'm here to help you understand **${topic.title}**.\n\nWhat would you like to know? You can ask about your situation, what steps to take, or what your[...]
+    return `Hi there! 💛 I'm HerRights AI. I'm here to help you understand **${topic.title}**.\n\nWhat would you like to know? You can ask about your situation, what steps to take, or what your rights are.`;
 
   if (thanks.some(t => m.includes(t)))
     return `You're so welcome! 🌸 Knowing your rights is the first step to protecting them. Is there anything else I can help you understand?`;
 
   if (m.includes("emergency") || m.includes("danger") || m.includes("help me") || m.includes("scared") || m.includes("urgent"))
-    return `🆘 **If you are in immediate danger, please call emergency services (911 / 999 / 112) right now.**\n\n**Support resources:**\n• National DV Hotline (USA): 1-800-799-7233\n• Cris[...]
+    return `🆘 **If you are in immediate danger, please call emergency services (911 / 999 / 112) right now.**\n\n**Support resources:**\n• National DV Hotline (USA): 1-800-799-7233\n• Crisis Text Line: Text HOME to 741741\n\nYou are not alone. Help is available 24/7.`;
 
   if ((m.includes("what") && m.includes("right")) || m.includes("my rights") || m.includes("rights"))
-    return `Under **${topic.title}**, your key rights include:\n\n${topic.rights.slice(0,3).map(r=>`• **${r.title}**: ${r.text.split('.')[0]}.`).join('\n\n')}\n\nWould you like more detail on a[...]
+    return `Under **${topic.title}**, your key rights include:\n\n${topic.rights.slice(0,3).map(r=>`• **${r.title}**: ${r.text.split('.')[0]}.`).join('\n\n')}\n\nWould you like more detail on any of these?`;
 
   if (m.includes("lawyer") || m.includes("attorney") || m.includes("free legal") || m.includes("legal help") || m.includes("afford"))
-    return `Finding free or affordable legal help:\n\n• **Legal Aid Society** — free for those who qualify by income\n• **Law School Clinics** — supervised students, often free\n• **ACL[...]
+    return `Finding free or affordable legal help:\n\n• **Legal Aid Society** — free for those who qualify by income\n• **Law School Clinics** — supervised students, often free\n• **ACLU** — advocacy organization with free resources\n• **Community Legal Services** — contact your local bar association\n\nYou have a right to legal representation.`;
 
   if (m.includes("document") || m.includes("evidence") || m.includes("proof") || m.includes("record"))
-    return `Documenting your situation is crucial! Here's how:\n\n• **Write it down** — date, time, location, what happened\n• **Save messages/emails** — screenshot everything immediately[...]
+    return `Documenting your situation is crucial! Here's how:\n\n• **Write it down** — date, time, location, what happened\n• **Save messages/emails** — screenshot everything immediately\n• **Get witnesses** — get contact info from anyone who saw it\n• **Medical records** — if there's an injury, get documented\n• **Keep organized** — store in a safe, accessible place\n\nDocumentation is powerful evidence.`;
 
   if (m.includes("discriminat") || m.includes("unfair") || m.includes("treated differently") || m.includes("bias"))
-    return `Discrimination is illegal. Here's what to do:\n\n1. **Document every incident** — dates, witnesses, what was said\n2. **Report internally** — file a formal complaint with HR\n3. *[...]
+    return `Discrimination is illegal. Here's what to do:\n\n1. **Document every incident** — dates, witnesses, what was said\n2. **Report internally** — file a formal complaint with HR\n3. **Contact authorities** — file a complaint with EEOC (employment) or HUD (housing)\n4. **Consult a lawyer** — get free legal advice from legal aid\n\nYou have protection under law against discrimination.`;
 
   if (m.includes("what should i do") || m.includes("what do i do") || m.includes("help") || m.includes("advice") || m.includes("next step"))
-    return `Here are the key steps I'd recommend:\n\n1. **Stay safe first** — if in danger, contact emergency services\n2. **Document everything** — write down what happened with dates\n3. **[...]
+    return `Here are the key steps I'd recommend:\n\n1. **Stay safe first** — if in danger, contact emergency services\n2. **Document everything** — write down what happened with dates\n3. **Know your rights** — explore the relevant section here\n4. **Get support** — reach out to organizations in resources\n5. **Seek legal advice** — consult a lawyer for your specific situation\n\nYou deserve to have your rights protected.`;
 
   // Match against rights content
   const matched = topic.rights.find(r =>
@@ -448,7 +559,7 @@ function getBotReply(msg, topic) {
     }
   }
 
-  return `I'm here to help with **${topic.title}**! 💛\n\nTry asking me:\n• "What are my rights?"\n• "What should I do if..."\n• "How do I find a lawyer?"\n• "What counts as discriminat[...]
+  return `I'm here to help with **${topic.title}**! 💛\n\nTry asking me:\n• "What are my rights?"\n• "What should I do if..."\n• "How do I find a lawyer?"\n• "What counts as discrimination?"`;
 }
 
 // STATE
@@ -456,6 +567,7 @@ let currentTopic = null;
 let chatHistory = {};
 
 function enterScene() {
+  loadChatHistory(); // Restore chat history
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('scene').style.display = 'block';
   document.getElementById('hud').style.display = 'flex';
@@ -481,7 +593,7 @@ function openTopic(idx) {
     `<div class="resource-chip">${r}</div>`
   ).join('');
   if (!chatHistory[idx]) {
-    chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. 💛 I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or wh[...]
+    chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. 💛 I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or what your rights are.`}];
   }
   renderChat(idx);
   document.getElementById('suggestions').innerHTML = SUGGESTIONS[idx].map(s =>
@@ -490,6 +602,20 @@ function openTopic(idx) {
   document.getElementById('side-panel').classList.add('open');
   switchTab('rights');
   document.querySelectorAll('.t-pill').forEach((p,i) => p.classList.toggle('active', i===idx));
+
+  // Add audio buttons after rendering
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.right-card');
+    cards.forEach(card => {
+      const titleEl = card.querySelector('.right-card-title');
+      const textEl = card.querySelector('.right-card-text');
+      if (titleEl && textEl && !card.querySelector('.listen-btn')) {
+        const fullText = `${titleEl.textContent}. ${textEl.textContent}`;
+        const audioBtn = createAudioButton(card, fullText);
+        card.appendChild(audioBtn);
+      }
+    });
+  }, 50);
 }
 
 function closePanel() {
@@ -545,6 +671,7 @@ async function sendChat() {
   document.getElementById('typing')?.remove();
   chatHistory[idx].push({role:'bot', text: getBotReply(msg, currentTopic)});
   renderChat(idx);
+  saveChatHistory();
   document.getElementById('send-btn').disabled = false;
   input.focus();
 }
