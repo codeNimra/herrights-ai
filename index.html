@@ -21,7 +21,7 @@
     /* SPLASH */
     #splash {
       position: fixed; inset: 0; z-index: 200;
-      background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #2d1b4e 100%);
+      background: linear-gradient(135deg, #0d0020 0%, #1a0533 40%, #2d0a5e 70%, #0a001a 100%);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center; padding: 24px;
@@ -30,19 +30,19 @@
     #splash.hidden { opacity: 0; visibility: hidden; }
     .splash-flowers { font-size: 42px; letter-spacing: 8px; margin-bottom: 16px; animation: sway 3s ease-in-out infinite; }
     @keyframes sway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
-    .splash-title { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); color:var(--white); font-weight:700; line-height:1.1; margin-bottom:6px; }
+    .splash-title { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); color:#f5e6ff; font-weight:700; line-height:1.1; margin-bottom:6px; }
     .splash-title em { color:var(--lavender); font-style:italic; }
     .splash-tagline { font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--lavender); margin-bottom:16px; font-weight:500; }
-    .splash-desc { font-size:15px; color:var(--silver); line-height:1.7; max-width:420px; margin-bottom:32px; }
+    .splash-desc { font-size:15px; color:#c4a0e8; line-height:1.7; max-width:420px; margin-bottom:32px; }
     .controls-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px; }
-    .ctrl { background:var(--slate); border-radius:10px; padding:10px 16px; font-size:12px; color:var(--silver); box-shadow:0 2px 12px rgba(147,51,234,0.15); border:1px solid var(--lavender); }
+    .ctrl { background:rgba(26,5,51,0.5); border-radius:10px; padding:10px 16px; font-size:12px; color:var(--silver); box-shadow:0 2px 12px rgba(147,51,234,0.15); border:1px solid var(--lavender); }
     .ctrl strong { display:block; color:var(--lavender); font-size:13px; margin-bottom:2px; }
     .enter-btn { background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border:none; border-radius:50px; padding:16px 44px; font-size:16px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.3s; }
     .enter-btn:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(147,51,234,0.4); }
     .iwd-badge { margin-top:20px; background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border-radius:20px; padding:6px 18px; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
 
     /* HUD */
-    #hud { position:fixed; top:0; left:0; right:0; z-index:100; display:none; align-items:center; justify-content:space-between; padding:14px 24px; background:linear-gradient(to bottom,rgba(15,23,42,0.95),rgba(30,41,59,0.8)); border-bottom:1px solid var(--lavender); }
+    #hud { position:fixed; top:0; left:0; right:0; z-index:100; display:none; align-items:center; justify-content:space-between; padding:14px 24px; background:linear-gradient(to bottom,rgba(10,0,30,0.95),transparent); border-bottom:1px solid var(--lavender); }
     .hud-brand { display:flex; align-items:center; gap:10px; }
     .hud-orb { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--lavender),#a855f7); display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 0 16px rgba(147,51,234,0.6); }
     .hud-name { font-family:'Playfair Display',serif; font-size:17px; color:var(--white); font-weight:700; }
@@ -51,7 +51,7 @@
 
     /* NAV */
     #topic-nav { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:none; gap:8px; z-index:100; flex-wrap:wrap; justify-content:center; padding:0 16px; }
-    .t-pill { background:var(--slate); border:1.5px solid var(--lavender); border-radius:50px; padding:7px 16px; color:var(--silver); font-size:12px; cursor:pointer; box-shadow:0 2px 12px rgba(147,51,234,0.1); transition:all 0.2s; }
+    .t-pill { background:rgba(255,255,255,0.05); border:1.5px solid rgba(192,132,252,0.4); border-radius:50px; padding:7px 16px; color:#c4a0e8; font-size:12px; cursor:pointer; box-shadow:0 2px 12px rgba(147,51,234,0.1); transition:all 0.2s; }
     .t-pill:hover,.t-pill.active { background:linear-gradient(135deg,var(--lavender),#a855f7); color:var(--white); border-color:transparent; box-shadow:0 4px 16px rgba(147,51,234,0.4); }
 
     /* SIDE PANEL */
@@ -195,8 +195,8 @@
 
 <!-- A-FRAME SCENE -->
 <a-scene id="scene" style="display:none"
-  background="color:#0a0e27"
-  fog="type:exponential;color:#0f172a;density:0.018"
+  background="color:#1a0533"
+  fog="type:exponential;color:#1a0533;density:0.015"
   vr-mode-ui="enabled:true">
 
   <a-light type="ambient" color="#1a2a5a" intensity="0.8"></a-light>
@@ -206,14 +206,17 @@
   <a-light type="point" color="#6d28d9" intensity="0.5" position="-5 4 -5" distance="20"></a-light>
 
   <!-- Ground -->
-  <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="80" material="color:#1e293b;roughness:0.9"></a-plane>
+  <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="80" material="color:#0d0020;roughness:0.9;metalness:0.3"></a-plane>
   <a-plane position="0 0.01 0" rotation="-90 0 0" width="80" height="80" material="color:#0f172a;opacity:0.15;transparent:true"></a-plane>
 
   <!-- Circular path -->
   <a-torus position="0 0.02 0" radius="7" radius-tubular="0.5" material="color:#9333ea;opacity:0.6;emissive:#9333ea;emissiveIntensity:0.3" rotation="-90 0 0"></a-torus>
 
-  <!-- Sky with 360° smooth rotation -->
-  <a-sky color="#0a0e27" animation="property:rotation;from:0 0 0;to:0 360 0;dur:90000;easing:linear;loop:true"></a-sky>
+  <!-- Sky with 360° smooth rotation and gradient -->
+  <a-sky color="#1a0533" animation="property:rotation;from:0 0 0;to:0 360 0;dur:90000;easing:linear;loop:true"></a-sky>
+
+  <!-- Premium star field -->
+  <a-entity id="stars-container"></a-entity>
 
   <!-- Central fountain -->
   <a-cylinder position="0 0.2 0" radius="1.2" height="0.4" material="color:#a855f7;roughness:0.3;metalness:0.4;emissive:#a855f7;emissiveIntensity:0.3"></a-cylinder>
@@ -573,6 +576,29 @@ function enterScene() {
   document.getElementById('hud').style.display = 'flex';
   document.getElementById('topic-nav').style.display = 'flex';
   document.getElementById('xhair').style.display = 'block';
+  
+  // Generate premium stars
+  const container = document.getElementById('stars-container');
+  for(let i = 0; i < 300; i++) {
+    const star = document.createElement('a-sphere');
+    const r = 20 + Math.random() * 15;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI;
+    star.setAttribute('position', {
+      x: r * Math.sin(phi) * Math.cos(theta),
+      y: r * Math.cos(phi),
+      z: r * Math.sin(phi) * Math.sin(theta)
+    });
+    star.setAttribute('radius', 0.02 + Math.random() * 0.05);
+    star.setAttribute('material', {
+      color: '#ffffff',
+      emissive: '#ffffff',
+      emissiveIntensity: Math.random(),
+      opacity: 0.4 + Math.random() * 0.6
+    });
+    container.appendChild(star);
+  }
+  
   setTimeout(() => {
     for (let i = 0; i < 6; i++) {
       const el = document.getElementById('p' + i);
