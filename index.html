@@ -55,7 +55,7 @@
     .t-pill:hover,.t-pill.active { background:var(--rose); color:#ffffff; border-color:transparent; box-shadow:0 4px 16px rgba(255,45,120,0.4); }
 
     /* SIDE PANEL */
-    #side-panel { position:fixed; top:50%; left:50%; z-index:150; width:min(700px,95vw); max-height:85vh; background:#0d0d0d; display:flex; flex-direction:column; border-radius:16px; transform:translate(-50%, -40%); opacity:0; visibility:hidden; transition:all 0.45s cubic-bezier(0.16,1,0.3,1); box-shadow:0 0 60px rgba(255,45,120,0.3), 0 20px 60px rgba(0,0,0,0.8); border:1px solid rgba(255,45,120,0.2); }
+    #side-panel { position:fixed; top:50%; left:50%; z-index:150; width:min(700px,95vw); max-height:85vh; background:#0d0d0d; display:flex; flex-direction:column; border-radius:16px; transform:tra[...]
     #side-panel.open { transform:translate(-50%, -50%); opacity:1; visibility:visible; }
     .panel-top { padding:20px 22px 16px; background:linear-gradient(135deg,#111111,#1a0010); border-bottom:1px solid rgba(255,45,120,0.2); flex-shrink:0; }
     .panel-top-row { display:flex; align-items:flex-start; justify-content:space-between; }
@@ -202,8 +202,8 @@
 
 <!-- A-FRAME SCENE -->
 <a-scene id="scene" style="display:none"
-  background="color:#050505"
-  fog="type:exponential;color:#0a0a0a;density:0.012"
+  background="color:#0d0015"
+  fog="type:exponential;color:#0d0015;density:0.012"
   vr-mode-ui="enabled:true">
 
   <a-light type="ambient" color="#111111" intensity="0.8"></a-light>
@@ -219,11 +219,20 @@
   <!-- Circular path -->
   <a-torus position="0 0.02 0" radius="7" radius-tubular="0.5" material="color:#ff2d78;opacity:0.6;emissive:#ff2d78;emissiveIntensity:0.5" rotation="-90 0 0"></a-torus>
 
-  <!-- Sky with 360° smooth rotation and starfield -->
-  <a-sky color="#050505" animation="property:rotation;from:0 0 0;to:0 360 0;dur:120000;easing:linear;loop:true"></a-sky>
+  <!-- Sky with deep dark purple-black -->
+  <a-sky color="#0d0015" animation="property:rotation;from:0 0 0;to:0 360 0;dur:120000;easing:linear;loop:true"></a-sky>
 
   <!-- Premium star field -->
   <a-entity id="stars-container"></a-entity>
+
+  <!-- First rotating torus ring: radius 18, color #ff2d78, opacity 0.12, 360° in 30 seconds -->
+  <a-torus position="0 1 0" radius="18" radius-tubular="0.15" material="color:#ff2d78;opacity:0.12;transparent:true;emissive:#ff2d78;emissiveIntensity:0.3" rotation="0 0 0" animation="property:rotation;to:360 0 0;dur:30000;easing:linear;loop:true"></a-torus>
+
+  <!-- Second rotating torus ring: radius 24, color #ff6b9d, opacity 0.08, opposite direction in 50 seconds -->
+  <a-torus position="0 1 0" radius="24" radius-tubular="0.12" material="color:#ff6b9d;opacity:0.08;transparent:true;emissive:#ff6b9d;emissiveIntensity:0.2" rotation="0 0 0" animation="property:rotation;to:-360 0 0;dur:50000;easing:linear;loop:true"></a-torus>
+
+  <!-- Subtle pink horizon glow: large sphere at ground level -->
+  <a-sphere position="0 0.5 0" radius="50" material="color:#ff2d78;opacity:0.05;transparent:true;emissive:#ff2d78;emissiveIntensity:0.1;side:back"></a-sphere>
 
   <!-- Central fountain -->
   <a-cylinder position="0 0.2 0" radius="1.2" height="0.4" material="color:#111111;roughness:0.3;metalness:0.6;emissive:#ff2d78;emissiveIntensity:0.4"></a-cylinder>
@@ -584,7 +593,7 @@ function enterScene() {
   document.getElementById('topic-nav').style.display = 'flex';
   document.getElementById('xhair').style.display = 'block';
   
-  // Generate premium stars
+  // Generate premium stars with pulsing animation
   const container = document.getElementById('stars-container');
   for(let i = 0; i < 400; i++) {
     const star = document.createElement('a-sphere');
@@ -608,9 +617,10 @@ function enterScene() {
       emissiveIntensity: 0.5 + Math.random() * 0.5,
       opacity: 0.5 + Math.random() * 0.5
     });
+    // Pulsing animation: opacity between 0.3 and 1.0
     star.setAttribute('animation', {
-      property: 'material.emissiveIntensity',
-      from: 0.2,
+      property: 'material.opacity',
+      from: 0.3,
       to: 1.0,
       dur: 2000 + Math.random() * 3000,
       dir: 'alternate',
@@ -640,7 +650,7 @@ function openTopic(idx) {
     `<div class="resource-chip">${r}</div>`
   ).join('');
   if (!chatHistory[idx]) {
-    chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. 💛 I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or wh[...]
+    chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. �� I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or wh[...]
   }
   renderChat(idx);
   document.getElementById('suggestions').innerHTML = SUGGESTIONS[idx].map(s =>
