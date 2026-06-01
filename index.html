@@ -9,202 +9,772 @@
   <style>
     :root {
       --rose: #ff2d78;
-      --gold: #ff2d78;
-      --cream: #0a0a0a;
-      --lilac: #ff6b9d;
-      --deep: #ffffff;
-      --text: #cccccc;
+      --accent: #ff2d78;
+      --bg: #0a0010;
+      --card-bg: #111111;
+      --text-primary: #ffffff;
+      --text-secondary: #cccccc;
+      --border: rgba(255, 45, 120, 0.2);
+      --emergency: #ef4444;
     }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'DM Sans', sans-serif; background: #050505; overflow: hidden; }
-
-    /* SPLASH */
-    #splash {
-      position: fixed; inset: 0; z-index: 200;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a0010 40%, #0d0d0d 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 24px;
-      transition: opacity 0.7s ease, visibility 0.7s ease;
+    
+    body { 
+      font-family: 'DM Sans', sans-serif; 
+      background: var(--bg); 
+      overflow: hidden;
+      color: var(--text-primary);
     }
-    #splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-flowers { font-size: 42px; letter-spacing: 8px; margin-bottom: 16px; animation: sway 3s ease-in-out infinite; }
-    @keyframes sway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
-    .splash-title { font-family:'Playfair Display',serif; font-size:clamp(30px,6vw,54px); color:#ffffff; font-weight:700; line-height:1.1; margin-bottom:6px; }
-    .splash-title em { color:var(--rose); font-style:italic; }
-    .splash-tagline { font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--rose); margin-bottom:16px; font-weight:500; }
-    .splash-desc { font-size:15px; color:#cccccc; line-height:1.7; max-width:420px; margin-bottom:32px; }
-    .controls-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px; }
-    .ctrl { background:#111111; border-radius:10px; padding:10px 16px; font-size:12px; color:#cccccc; box-shadow:0 2px 12px rgba(255,45,120,0.1); border:1px solid rgba(255,45,120,0.3); opacity:0.8; }
-    .ctrl strong { display:block; color:var(--rose); font-size:13px; margin-bottom:2px; }
-    .enter-btn { background:linear-gradient(135deg,var(--rose),var(--lilac)); color:#ffffff; border:none; border-radius:50px; padding:16px 44px; font-size:16px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.3s; }
-    .enter-btn:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(255,45,120,0.5); }
-    .iwd-badge { margin-top:20px; background:linear-gradient(135deg,var(--rose),var(--rose)); color:#ffffff; border-radius:20px; padding:6px 18px; font-size:12px; letter-spacing:1px; text-transform:uppercase; }
-
-    /* HUD */
-    #hud { position:fixed; top:0; left:0; right:0; z-index:100; display:none; align-items:center; justify-content:space-between; padding:14px 24px; background:linear-gradient(to bottom,rgba(5,5,5,0.9),rgba(5,5,5,0.7)); border-bottom:1px solid rgba(255,45,120,0.2); }
-    .hud-brand { display:flex; align-items:center; gap:10px; }
-    .hud-orb { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--rose),var(--lilac)); display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:0 0 12px rgba(255,45,120,0.5); }
-    .hud-name { font-family:'Playfair Display',serif; font-size:17px; color:#ffffff; font-weight:700; }
-    .hud-sub { font-size:10px; color:var(--rose); letter-spacing:2px; text-transform:uppercase; }
-    .hud-hint { font-size:12px; color:#999999; }
-
-    /* NAV */
-    #topic-nav { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); display:none; gap:8px; z-index:100; flex-wrap:wrap; justify-content:center; padding:0 16px; }
-    .t-pill { background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,45,120,0.4); border-radius:50px; padding:7px 16px; color:#cccccc; font-size:12px; cursor:pointer; box-shadow:0 2px 12px rgba(255,45,120,0.1); transition:all 0.2s; }
-    .t-pill:hover,.t-pill.active { background:var(--rose); color:#ffffff; border-color:transparent; box-shadow:0 4px 16px rgba(255,45,120,0.4); }
-
-    /* SIDE PANEL */
-    #side-panel { position:fixed; top:50%; left:50%; z-index:150; width:min(700px,95vw); max-height:85vh; background:#0d0d0d; display:flex; flex-direction:column; border-radius:16px; transform:translate(-50%,-50%) scale(0.9); opacity:0; visibility:hidden; transition:all 0.3s ease; box-shadow:0 12px 60px rgba(255,45,120,0.3); border:1px solid rgba(255,45,120,0.2); }
-    #side-panel.open { transform:translate(-50%, -50%) scale(1); opacity:1; visibility:visible; }
-    .panel-top { padding:20px 22px 16px; background:linear-gradient(135deg,#111111,#1a0010); border-bottom:1px solid rgba(255,45,120,0.2); flex-shrink:0; }
-    .panel-top-row { display:flex; align-items:flex-start; justify-content:space-between; }
-    .panel-icon-wrap { font-size:32px; margin-right:12px; }
-    .panel-title { font-family:'Playfair Display',serif; font-size:20px; color:#ffffff; font-weight:700; }
-    .panel-subtitle { font-size:12px; color:var(--rose); margin-top:2px; }
-    .panel-close { background:rgba(255,45,120,0.15); border:none; border-radius:50%; width:32px; height:32px; font-size:18px; color:var(--rose); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-    .panel-close:hover { background:rgba(255,45,120,0.3); }
-    .panel-tabs { display:flex; border-bottom:1px solid rgba(255,45,120,0.2); flex-shrink:0; }
-    .tab-btn { flex:1; padding:12px; font-size:13px; font-weight:500; background:none; border:none; cursor:pointer; color:#666666; border-bottom:2px solid transparent; transition:all 0.2s; }
-    .tab-btn.active { color:var(--rose); border-bottom-color:var(--rose); }
-
-    /* RIGHTS TAB */
-    #tab-rights { flex:1; overflow-y:auto; padding:16px; }
-    .right-card { background:#111111; border:1px solid rgba(255,45,120,0.2); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
-    .right-card-title { color:var(--rose); font-size:13px; font-weight:600; margin-bottom:5px; }
-    .right-card-text { color:#cccccc; font-size:13px; line-height:1.65; }
-    .resources-section { margin-top:12px; }
-    .resources-label { font-size:11px; color:var(--rose); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
-    .resource-chips { display:flex; gap:6px; flex-wrap:wrap; }
-    .resource-chip { background:rgba(255,45,120,0.1); border:1px solid rgba(255,45,120,0.3); border-radius:20px; padding:5px 12px; color:var(--rose); font-size:12px; }
-    .disclaimer { margin-top:14px; padding:10px 14px; background:#0a0a0a; border-left:3px solid var(--rose); border-radius:4px; color:#888888; font-size:12px; line-height:1.5; }
-
-    /* CHAT TAB */
-    #tab-chat { flex:1; display:none; flex-direction:column; overflow:hidden; }
-    #tab-chat.show { display:flex; }
-    .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
-    .msg { display:flex; gap:8px; }
-    .msg.user { flex-direction:row-reverse; }
-    .msg-avatar { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; margin-top:2px; background:linear-gradient(135deg,#ff2d78,#ff6b9d); }
-    .msg.user .msg-avatar { background:linear-gradient(135deg,#333333,var(--rose)); }
-    .msg-bubble { max-width:82%; padding:10px 14px; border-radius:16px; font-size:13px; line-height:1.6; }
-    .msg.bot .msg-bubble { background:#111111; border:1px solid rgba(255,45,120,0.2); border-radius:4px 16px 16px 16px; color:#cccccc; }
-    .msg.user .msg-bubble { background:linear-gradient(135deg,var(--rose),var(--lilac)); color:#ffffff; border-radius:16px 4px 16px 16px; }
-    .typing { display:flex; gap:4px; align-items:center; padding:4px 0; }
-    .typing span { width:7px; height:7px; border-radius:50%; background:var(--rose); animation:bounce 1.2s ease-in-out infinite; }
-    .typing span:nth-child(2){animation-delay:0.2s} .typing span:nth-child(3){animation-delay:0.4s}
-    @keyframes bounce { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
-    .chat-input-row { padding:12px 14px; border-top:1px solid rgba(255,45,120,0.2); display:flex; gap:8px; align-items:flex-end; flex-shrink:0; }
-    .chat-input { flex:1; border:1.5px solid rgba(255,45,120,0.3); border-radius:20px; padding:10px 16px; font-family:'DM Sans',sans-serif; font-size:14px; color:#ffffff; background:#111111; transition:all 0.2s; }
-    .chat-input:focus { border-color:var(--rose); background:#111111; box-shadow:0 0 12px rgba(255,45,120,0.3); outline:none; }
-    .chat-input::placeholder { color:#555555; }
-    .chat-send { background:linear-gradient(135deg,var(--rose),var(--lilac)); border:none; border-radius:50%; width:38px; height:38px; color:#ffffff; font-size:16px; cursor:pointer; flex-shrink:0; transition:all 0.2s; }
-    .chat-send:hover { transform:scale(1.1); box-shadow:0 6px 16px rgba(255,45,120,0.4); }
-    .chat-send:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
-    .suggestions { padding:0 14px 10px; display:flex; gap:6px; flex-wrap:wrap; }
-    .sug-chip { background:#111111; border:1px solid rgba(255,45,120,0.3); border-radius:20px; padding:5px 12px; color:var(--rose); font-size:12px; cursor:pointer; transition:all 0.15s; }
-    .sug-chip:hover { background:var(--rose); color:#ffffff; border-color:transparent; }
-
-    /* CROSSHAIR */
-    #xhair { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:50; width:18px; height:18px; display:none; }
-    #xhair::before,#xhair::after { content:''; position:absolute; background:rgba(255,45,120,0.7); border-radius:2px; }
-    #xhair::before { width:2px; height:100%; left:50%; transform:translateX(-50%); }
-    #xhair::after { height:2px; width:100%; top:50%; transform:translateY(-50%); }
-
-    /* OVERLAY */
-    #overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:149; display:none; backdrop-filter:blur(4px); }
-    #overlay.show { display:block; }
+    
+    /* SCREENS & TRANSITIONS */
+    .screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 60px;
+    }
+    
+    .screen.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* SCREEN: WELCOME */
+    #screen-welcome {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(135deg, var(--bg) 0%, #1a0010 40%, var(--bg) 100%);
+    }
+    
+    .welcome-logo {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    
+    .welcome-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 8vw, 56px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    
+    .welcome-tagline {
+      font-size: 18px;
+      color: var(--rose);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .welcome-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      max-width: 400px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose), #ff6b9d);
+      color: var(--text-primary);
+      border: none;
+      border-radius: 50px;
+      padding: 16px 44px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 44px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255, 45, 120, 0.5);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(-1px);
+    }
+    
+    /* SCREEN: COUNTRY SELECTOR */
+    #screen-country {
+      padding: 32px 24px;
+      overflow-y: auto;
+    }
+    
+    .screen-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .screen-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .screen-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-size: 15px;
+      margin-bottom: 20px;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--rose);
+      box-shadow: 0 0 12px rgba(255, 45, 120, 0.3);
+    }
+    
+    .search-input::placeholder {
+      color: #555555;
+    }
+    
+    .countries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .country-chip {
+      padding: 12px 16px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      font-size: 14px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .country-chip:hover {
+      border-color: var(--rose);
+      background: rgba(255, 45, 120, 0.05);
+    }
+    
+    .country-chip.selected {
+      background: var(--rose);
+      color: var(--text-primary);
+      border-color: var(--rose);
+    }
+    
+    .country-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .btn-skip {
+      flex: 1;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 50px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    
+    .btn-skip:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+    
+    .btn-continue {
+      flex: 1;
+      background: linear-gradient(135deg, var(--rose), #ff6b9d);
+      color: var(--text-primary);
+      border: none;
+      border-radius: 50px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    
+    .btn-continue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 45, 120, 0.4);
+    }
+    
+    /* SCREEN: SITUATION */
+    #screen-situation {
+      padding: 32px 24px;
+      overflow-y: auto;
+    }
+    
+    .progress-bar {
+      background: var(--card-bg);
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, var(--rose), #ff6b9d);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    
+    .situation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .situation-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      position: relative;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .situation-card:hover {
+      border-color: var(--rose);
+      background: rgba(255, 45, 120, 0.05);
+      transform: translateY(-4px);
+    }
+    
+    .situation-card.visited::after {
+      content: '✓';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--rose);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    
+    .situation-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    
+    .situation-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    
+    .situation-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    
+    /* SCREEN: CHAT */
+    #screen-chat {
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
+    }
+    
+    .chat-header {
+      background: linear-gradient(135deg, var(--card-bg), #1a0010);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .chat-header-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    
+    .chat-header-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .chat-header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    
+    .chat-header-country {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    
+    .chat-header-buttons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    
+    .chat-btn-small {
+      background: rgba(255, 45, 120, 0.1);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    .chat-btn-small:hover {
+      background: rgba(255, 45, 120, 0.2);
+      color: var(--rose);
+    }
+    
+    .rights-summary {
+      background: rgba(255, 45, 120, 0.05);
+      border-left: 3px solid var(--rose);
+      padding: 12px 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin: 12px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .rights-summary:hover {
+      background: rgba(255, 45, 120, 0.1);
+    }
+    
+    .rights-summary-title {
+      font-weight: 600;
+      color: var(--rose);
+      margin-bottom: 6px;
+    }
+    
+    .rights-summary.collapsed .rights-summary-content {
+      display: none;
+    }
+    
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .msg {
+      display: flex;
+      gap: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .msg.user {
+      flex-direction: row-reverse;
+    }
+    
+    .msg-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+    }
+    
+    .msg.user .msg-avatar {
+      background: linear-gradient(135deg, var(--rose), #ff6b9d);
+      border: none;
+    }
+    
+    .msg-bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+    
+    .msg.bot .msg-bubble {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px 16px 16px 16px;
+      color: var(--text-secondary);
+    }
+    
+    .msg.user .msg-bubble {
+      background: linear-gradient(135deg, var(--rose), #ff6b9d);
+      color: var(--text-primary);
+      border-radius: 16px 4px 16px 16px;
+    }
+    
+    .typing {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 4px 0;
+    }
+    
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    
+    .suggestions {
+      padding: 0 14px 10px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    
+    .sug-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      color: var(--rose);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    
+    .sug-chip:hover {
+      background: var(--rose);
+      color: var(--text-primary);
+      border-color: transparent;
+    }
+    
+    .chat-input-row {
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      flex-shrink: 0;
+      background: rgba(10, 0, 16, 0.5);
+    }
+    
+    .chat-input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--card-bg);
+      transition: all 0.2s;
+      resize: none;
+      max-height: 80px;
+      min-height: 44px;
+    }
+    
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--rose);
+      box-shadow: 0 0 12px rgba(255, 45, 120, 0.3);
+    }
+    
+    .chat-input::placeholder {
+      color: #555555;
+    }
+    
+    .chat-send {
+      background: linear-gradient(135deg, var(--rose), #ff6b9d);
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      color: var(--text-primary);
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .chat-send:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(255, 45, 120, 0.4);
+    }
+    
+    .chat-send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* EMERGENCY BUTTON */
+    .emergency-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 250;
+      background: var(--emergency);
+      color: var(--text-primary);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+      min-height: 44px;
+    }
+    
+    .emergency-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.6);
+    }
+    
+    /* EMERGENCY OVERLAY */
+    #screen-emergency {
+      z-index: 300;
+      background: rgba(0, 0, 0, 0.95);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    
+    .emergency-content {
+      max-width: 400px;
+    }
+    
+    .emergency-heading {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    
+    .emergency-heart {
+      font-size: 36px;
+      animation: pulse 1.5s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .emergency-line {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    
+    .emergency-line-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    
+    .emergency-line-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--rose);
+      font-family: monospace;
+    }
+    
+    .emergency-line-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    
+    .btn-close-emergency {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 50px;
+      padding: 12px 32px;
+      cursor: pointer;
+      margin-top: 24px;
+      font-weight: 600;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    
+    .btn-close-emergency:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+    
+    /* FOOTER */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(239, 68, 68, 0.1);
+      border-top: 1px solid rgba(239, 68, 68, 0.2);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      color: #ef4444;
+      z-index: 99;
+      line-height: 1.4;
+    }
+    
+    #screen-emergency ~ .footer {
+      display: none;
+    }
+    
+    /* A-FRAME BACKGROUND */
+    #scene {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .situation-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      
+      .situation-card {
+        min-height: 140px;
+        padding: 12px;
+      }
+      
+      .situation-icon {
+        font-size: 28px;
+      }
+      
+      .chat-input {
+        min-height: 50px;
+      }
+      
+      .emergency-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+      
+      .screen {
+        padding-bottom: 70px;
+      }
+      
+      .footer {
+        height: 70px;
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="splash-flowers">🌸🌷🌺🌸🌷</div>
-  <div class="splash-title">HerRights</div>
-  <div class="splash-tagline">International Women's Day 2026</div>
-  <p class="splash-desc">Step into a beautiful 3D garden where every woman's legal rights are explained simply, clearly, and with warmth. Explore, ask questions, leave empowered.</p>
-  <div class="controls-row">
-    <div class="ctrl"><strong>WASD / Arrows</strong>Walk around</div>
-    <div class="ctrl"><strong>Mouse Drag</strong>Look around</div>
-    <div class="ctrl"><strong>Click a Panel</strong>Explore rights</div>
-    <div class="ctrl"><strong>Chat Tab</strong>Ask questions (no login!)</div>
-  </div>
-  <button class="enter-btn" onclick="enterScene()">✨ Enter the Rights Garden →</button>
-  <div class="iwd-badge">🎀 SDG 5 Gender Equality · SDG 16 Justice for All</div>
-</div>
-
-<!-- HUD -->
-<div id="hud">
-  <div class="hud-brand">
-    <div class="hud-orb">⚖️</div>
-    <div>
-      <div class="hud-name">HerRights</div>
-      <div class="hud-sub">Women's Day 2026</div>
-    </div>
-  </div>
-  <div class="hud-hint">🌸 Click a glowing panel to explore your rights</div>
-</div>
-
-<div id="xhair"></div>
-
-<!-- TOPIC NAV -->
-<div id="topic-nav">
-  <div class="t-pill" onclick="flyTo(0)">💼 Workplace</div>
-  <div class="t-pill" onclick="flyTo(1)">🛡️ Safety</div>
-  <div class="t-pill" onclick="flyTo(2)">🏠 Housing</div>
-  <div class="t-pill" onclick="flyTo(3)">🌍 Immigration</div>
-  <div class="t-pill" onclick="flyTo(4)">🌸 Reproductive</div>
-  <div class="t-pill" onclick="flyTo(5)">⚖️ General</div>
-</div>
-
-<!-- OVERLAY -->
-<div id="overlay" onclick="closePanel()"></div>
-
-<!-- SIDE PANEL -->
-<div id="side-panel">
-  <div class="panel-top">
-    <div class="panel-top-row">
-      <div style="display:flex;align-items:flex-start">
-        <div class="panel-icon-wrap" id="p-icon">🌸</div>
-        <div>
-          <div class="panel-title" id="p-title">Your Rights</div>
-          <div class="panel-subtitle" id="p-sub">Select a topic to begin</div>
-        </div>
-      </div>
-      <button class="panel-close" onclick="closePanel()">x</button>
-    </div>
-  </div>
-  <div class="panel-tabs">
-    <button class="tab-btn active" id="tab-btn-rights" onclick="switchTab('rights')">📋 Your Rights</button>
-    <button class="tab-btn" id="tab-btn-chat" onclick="switchTab('chat')">💬 Ask HerRights AI</button>
-  </div>
-  <div id="tab-rights">
-    <div id="rights-cards"></div>
-    <div style="padding:0 16px 16px">
-      <div class="resources-section">
-        <div class="resources-label">Helpful Resources</div>
-        <div class="resource-chips" id="resource-chips"></div>
-      </div>
-      <div class="disclaimer">⚠️ General legal information only not legal advice. Laws vary by location. Please consult a qualified lawyer for your specific situation.</div>
-    </div>
-  </div>
-  <div id="tab-chat">
-    <div class="chat-messages" id="chat-messages"></div>
-    <div class="suggestions" id="suggestions"></div>
-    <div class="chat-input-row">
-      <textarea class="chat-input" id="chat-input" placeholder="Ask about your rights..." rows="1"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
-      <button class="chat-send" id="send-btn" onclick="sendChat()">➤</button>
-    </div>
-  </div>
-</div>
-
-<!-- A-FRAME SCENE -->
-<a-scene id="scene" style="display:none"
+<!-- A-FRAME BACKGROUND SCENE -->
+<a-scene id="scene"
   background="color:#0d0015"
   fog="type:exponential;color:#0d0015;density:0.012"
-  vr-mode-ui="enabled:true">
+  vr-mode-ui="enabled:false">
 
   <a-light type="ambient" color="#111111" intensity="0.8"></a-light>
   <a-light type="directional" color="#ffffff" intensity="1.0" position="2 5 2"></a-light>
@@ -213,533 +783,503 @@
   <a-light type="point" color="#ff2d78" intensity="1.2" position="-8 4 -8" distance="25"></a-light>
 
   <!-- Ground -->
-  <a-plane position="0 0 0" rotation="-90 0 0" width="80" height="80" material="color:#0d0d0d;roughness:0.1;metalness:0.8"></a-plane>
-  <a-plane position="0 0.01 0" rotation="-90 0 0" width="80" height="80" material="color:#ff2d78;opacity:0.15;transparent:true"></a-plane>
+  <a-plane position="0 0 0" rotation="-90 0 0" width="120" height="120" material="color:#0d0d0d;roughness:0.1;metalness:0.8"></a-plane>
+  <a-plane position="0 0.01 0" rotation="-90 0 0" width="120" height="120" material="color:#ff2d78;opacity:0.15;transparent:true"></a-plane>
 
   <!-- Circular path -->
-  <a-torus position="0 0.02 0" radius="7" radius-tubular="0.5" material="color:#ff2d78;opacity:0.6;emissive:#ff2d78;emissiveIntensity:0.5" rotation="-90 0 0"></a-torus>
+  <a-torus position="0 0.02 0" radius="10" radius-tubular="0.5" material="color:#ff2d78;opacity:0.6;emissive:#ff2d78;emissiveIntensity:0.5" rotation="-90 0 0"></a-torus>
 
-  <!-- Sky with deep dark purple-black -->
+  <!-- Sky -->
   <a-sky color="#0d0015" animation="property:rotation;from:0 0 0;to:0 360 0;dur:120000;easing:linear;loop:true"></a-sky>
 
-  <!-- Premium star field -->
+  <!-- Stars -->
   <a-entity id="stars-container"></a-entity>
 
-  <!-- First rotating torus ring: radius 18, color #ff2d78, opacity 0.12, 360° in 30 seconds -->
-  <a-torus position="0 1 0" radius="18" radius-tubular="0.15" material="color:#ff2d78;opacity:0.12;transparent:true;emissive:#ff2d78;emissiveIntensity:0.3" rotation="0 0 0" animation="property:rotation;to:360 0 0;dur:30000;easing:linear;loop:true"></a-torus>
+  <!-- Rotating torus rings -->
+  <a-torus position="0 1 0" radius="18" radius-tubular="0.15" material="color:#ff2d78;opacity:0.12;transparent:true;emissive:#ff2d78;emissiveIntensity:0.3" rotation="0 0 0" animation="property:rotation;to:0 360 0;dur:30000;easing:linear;loop:true"></a-torus>
+  <a-torus position="0 1 0" radius="24" radius-tubular="0.12" material="color:#ff6b9d;opacity:0.08;transparent:true;emissive:#ff6b9d;emissiveIntensity:0.2" rotation="0 0 0" animation="property:rotation;to:0 -360 0;dur:50000;easing:linear;loop:true"></a-torus>
 
-  <!-- Second rotating torus ring: radius 24, color #ff6b9d, opacity 0.08, opposite direction in 50 seconds -->
-  <a-torus position="0 1 0" radius="24" radius-tubular="0.12" material="color:#ff6b9d;opacity:0.08;transparent:true;emissive:#ff6b9d;emissiveIntensity:0.2" rotation="0 0 0" animation="property:rotation;to:-360 0 0;dur:50000;easing:linear;loop:true"></a-torus>
-
-  <!-- Subtle pink horizon glow: large sphere at ground level -->
-  <a-sphere position="0 0.5 0" radius="50" material="color:#ff2d78;opacity:0.05;transparent:true;emissive:#ff2d78;emissiveIntensity:0.1;side:back"></a-sphere>
+  <!-- Horizon glow -->
+  <a-sphere position="0 0.5 0" radius="60" material="color:#ff2d78;opacity:0.05;transparent:true;emissive:#ff2d78;emissiveIntensity:0.1;side:back"></a-sphere>
 
   <!-- Central fountain -->
   <a-cylinder position="0 0.2 0" radius="1.2" height="0.4" material="color:#111111;roughness:0.3;metalness:0.6;emissive:#ff2d78;emissiveIntensity:0.4"></a-cylinder>
   <a-cylinder position="0 0.8 0" radius="0.08" height="1.2" material="color:#ffffff;emissive:#ffffff;emissiveIntensity:0.8;metalness:0.9"></a-cylinder>
-  <a-sphere position="0 1.5 0" radius="0.22" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:1.0"
-    animation="property:position;to:0 1.7 0;dur:1800;dir:alternate;loop:true;easing:easeInOutSine">
-  </a-sphere>
+  <a-sphere position="0 1.5 0" radius="0.22" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:1.0" animation="property:position;to:0 1.7 0;dur:1800;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
   <a-light type="point" color="#ff2d78" intensity="2.5" position="0 1.5 0" distance="15"></a-light>
-  <a-text value="KNOW YOUR RIGHTS" position="0 2.6 0" align="center" color="#ffffff" width="7" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt" animation="property:rotation;to:0 360 0;dur:25000;loop:true;easing:linear"></a-text>
-  <a-text value="🌸 HerRights · IWD 2026 🌸" position="0 2.05 0" align="center" color="#ff2d78" width="5" animation="property:rotation;to:0 360 0;dur:25000;loop:true;easing:linear"></a-text>
 
   <!-- Floating petals -->
   <a-sphere position="2 2.5 2" radius="0.12" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:1.0;opacity:0.8" animation="property:position;from:2 2.5 2;to:2.5 4 1.5;dur:4000;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
   <a-sphere position="-3 3 1" radius="0.09" material="color:#ffffff;emissive:#ffffff;emissiveIntensity:0.9;opacity:0.7" animation="property:position;from:-3 3 1;to:-2.5 4.5 0.5;dur:3500;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
   <a-sphere position="1 4 -3" radius="0.1" material="color:#ff6b9d;emissive:#ff6b9d;emissiveIntensity:1.0;opacity:0.8" animation="property:position;from:1 4 -3;to:1.5 5.5 -2.5;dur:5000;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
 
-  <!-- Garden trees -->
-  <a-entity position="4 0 -4"><a-cylinder radius="0.12" height="2" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#222222;emissive:#ff2d78;emissiveIntensity:0.3"></a-sphere></a-entity>
-  <a-entity position="-4 0 -4"><a-cylinder radius="0.12" height="2.2" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.6 0" radius="0.85" material="color:#222222;emissive:#ff2d78;emissiveIntensity:0.3"></a-sphere></a-entity>
-  <a-entity position="4 0 4"><a-cylinder radius="0.12" height="1.8" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.75" material="color:#222222;emissive:#ff2d78;emissiveIntensity:0.3"></a-sphere></a-entity>
-  <a-entity position="-4 0 4"><a-cylinder radius="0.12" height="2" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.5 0" radius="0.8" material="color:#222222;emissive:#ff2d78;emissiveIntensity:0.3"></a-sphere></a-entity>
-
   <!-- Outer ring -->
-  <a-torus position="0 0.05 0" radius="12" radius-tubular="0.08" rotation="-90 0 0" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.4;opacity:0.5"></a-torus>
+  <a-torus position="0 0.05 0" radius="15" radius-tubular="0.08" rotation="-90 0 0" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.4;opacity:0.5"></a-torus>
 
-  <!-- PANEL 0: WORKPLACE -->
-  <a-entity id="p0" position="0 1.6 -7" class="clickable" data-topic="0" dynamic-face animation="property:position;to:0 1.8 -7;dur:2000;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="💼" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="WORKPLACE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Discrimination · Pay Equity&#xA;Harassment · Parental Leave" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:1000;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- PANEL 1: SAFETY -->
-  <a-entity id="p1" position="6.06 1.6 -3.5" class="clickable" data-topic="1" dynamic-face animation="property:position;to:6.06 1.8 -3.5;dur:2200;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="🛡️" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="SAFETY &amp; PROTECTION" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Domestic Violence · Orders&#xA;Shelters · Emergency Help" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:1200;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- PANEL 2: HOUSING -->
-  <a-entity id="p2" position="6.06 1.6 3.5" class="clickable" data-topic="2" dynamic-face animation="property:position;to:6.06 1.8 3.5;dur:1900;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="🏠" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="HOUSING &amp; EVICTION" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Tenant Rights · Eviction&#xA;Discrimination · Repairs" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:900;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- PANEL 3: IMMIGRATION -->
-  <a-entity id="p3" position="0 1.6 7" class="clickable" data-topic="3" dynamic-face animation="property:position;to:0 1.8 7;dur:2400;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="🌍" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="IMMIGRATION &amp; STATUS" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Visa · Asylum · DACA&#xA;Deportation · Your Rights" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:1400;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- PANEL 4: REPRODUCTIVE -->
-  <a-entity id="p4" position="-6.06 1.6 3.5" class="clickable" data-topic="4" dynamic-face animation="property:position;to:-6.06 1.8 3.5;dur:2100;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="🌸" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="REPRODUCTIVE RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Healthcare · Parental Rights&#xA;Custody · Body Autonomy" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:1100;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- PANEL 5: GENERAL -->
-  <a-entity id="p5" position="-6.06 1.6 -3.5" class="clickable" data-topic="5" dynamic-face animation="property:position;to:-6.06 1.8 -3.5;dur:2300;dir:alternate;loop:true;easing:easeInOutSine">
-    <a-plane width="3.4" height="2.5" position="0 0 -0.08" material="color:#ff2d78;opacity:0.3;transparent:true"></a-plane>
-    <a-plane width="3.2" height="2.3" material="color:#111111;roughness:0.5;opacity:0.95"></a-plane>
-    <a-plane width="3.2" height="0.18" position="0 1.06 0.01" material="color:#ff2d78;emissive:#ff2d78;emissiveIntensity:0.7"></a-plane>
-    <a-text value="⚖️" position="0 0.65 0.05" align="center" width="2.5"></a-text>
-    <a-text value="GENERAL LEGAL RIGHTS" position="0 0.18 0.05" align="center" width="4.2" color="#ff2d78" font="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-text>
-    <a-text value="Due Process · Equal Rights&#xA;Access to Justice · Courts" position="0 -0.32 0.05" align="center" width="3.8" color="#cccccc"></a-text>
-    <a-text value="✦ TAP TO EXPLORE ✦" position="0 -0.82 0.05" align="center" width="3" color="#ff2d78" animation="property:components.material.material.opacity;to:0.1;dur:1600;dir:alternate;loop:true"></a-text>
-    <a-light type="point" color="#ff2d78" intensity="1.5" distance="5" position="0 0 1"></a-light>
-  </a-entity>
-
-  <!-- Camera -->
-  <a-entity id="rig" position="0 0 0">
-    <a-camera id="cam" look-controls="pointerLockEnabled:false" wasd-controls="enabled:true;acceleration:20" position="0 1.6 0">
-      <a-cursor color="#ff2d78" fuse="false" raycaster="objects:.clickable" opacity="0.7"></a-cursor>
-    </a-camera>
+  <!-- Static camera (no movement) -->
+  <a-entity id="rig" position="0 1.6 0">
+    <a-camera id="cam" look-controls="enabled:false" position="0 0 0"></a-camera>
   </a-entity>
 </a-scene>
 
+<!-- SCREEN: WELCOME -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-logo">⚖️</div>
+  <div class="welcome-title">HerRights</div>
+  <div class="welcome-tagline">Know your rights. Stay protected.</div>
+  <div class="welcome-subtitle">Built for International Women's Day 2026</div>
+  <button class="btn-primary" onclick="goToScreen('country')">Get Started →</button>
+</div>
+
+<!-- SCREEN: COUNTRY SELECTOR -->
+<div id="screen-country" class="screen">
+  <div class="screen-header">
+    <div class="screen-title">Where are you located?</div>
+    <div class="screen-subtitle">Legal rights vary by country</div>
+  </div>
+  
+  <input type="text" class="search-input" id="country-search" placeholder="Search countries..." onkeyup="filterCountries()">
+  
+  <div class="countries-grid" id="countries-grid">
+    <!-- Generated by JS -->
+  </div>
+  
+  <div class="country-actions">
+    <button class="btn-skip" onclick="goToScreen('situation')">Skip for now</button>
+    <button class="btn-continue" id="btn-country-continue" onclick="continueFromCountry()" disabled>Continue →</button>
+  </div>
+</div>
+
+<!-- SCREEN: SITUATION -->
+<div id="screen-situation" class="screen">
+  <div class="screen-header">
+    <div class="screen-title">What situation are you in?</div>
+    <div class="screen-subtitle">Choose the area you need help with</div>
+  </div>
+  
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <div class="progress-text" id="progress-text">You've explored 0 of 6 areas</div>
+  
+  <div class="situation-grid" id="situation-grid">
+    <!-- Generated by JS -->
+  </div>
+</div>
+
+<!-- SCREEN: CHAT -->
+<div id="screen-chat" class="screen">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-header-icon" id="chat-icon">💼</div>
+      <div class="chat-header-info">
+        <div class="chat-header-title" id="chat-title">Workplace Rights</div>
+        <div class="chat-header-country" id="chat-country">📍 Global</div>
+      </div>
+    </div>
+    <div class="chat-header-buttons">
+      <button class="chat-btn-small" onclick="shareRights()" title="Share rights">📤</button>
+      <button class="chat-btn-small" onclick="goToScreen('situation')" title="Back">← Back</button>
+    </div>
+  </div>
+  
+  <div class="rights-summary collapsed" id="rights-summary" onclick="toggleRightsSummary()">
+    <div class="rights-summary-title">🌸 Key rights for this topic</div>
+    <div class="rights-summary-content" id="rights-summary-content"></div>
+  </div>
+  
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="suggestions" id="suggestions"></div>
+  <div class="chat-input-row">
+    <textarea class="chat-input" id="chat-input" placeholder="Ask about your rights..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+    <button class="chat-send" id="send-btn" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- SCREEN: EMERGENCY -->
+<div id="screen-emergency" class="screen">
+  <div class="emergency-content">
+    <div class="emergency-heading">You are not alone</div>
+    <div class="emergency-heart">💛</div>
+    
+    <div class="emergency-line">
+      <div class="emergency-line-label">National DV Hotline</div>
+      <div class="emergency-line-number">1-800-799-7233</div>
+      <div class="emergency-line-desc">Free, confidential, 24/7</div>
+    </div>
+    
+    <div class="emergency-line">
+      <div class="emergency-line-label">Crisis Text Line</div>
+      <div class="emergency-line-number">Text HOME to 741741</div>
+      <div class="emergency-line-desc">Text-based support, 24/7</div>
+    </div>
+    
+    <div class="emergency-line">
+      <div class="emergency-line-label">Emergency Services</div>
+      <div class="emergency-line-number">911 / 999 / 112</div>
+      <div class="emergency-line-desc">In immediate danger</div>
+    </div>
+    
+    <button class="btn-close-emergency" onclick="goToScreen('chat')">Close</button>
+  </div>
+</div>
+
+<!-- EMERGENCY BUTTON (always visible) -->
+<button class="emergency-btn" onclick="goToScreen('emergency')">🆘 Help</button>
+
+<!-- FOOTER (always visible except on emergency screen) -->
+<div class="footer">
+  Need immediate help? Call 1-800-799-7233 or text HOME to 741741
+</div>
+
 <script>
-// Register custom 'dynamic-face' component for panel orientation
-AFRAME.registerComponent('dynamic-face', {
-  tick: function() {
-    const camera = document.getElementById('cam');
-    if (!camera) return;
-    
-    const cameraPos = camera.getAttribute('position');
-    const entityPos = this.el.getAttribute('position');
-    
-    // Calculate direction from panel to camera
-    const dx = cameraPos.x - entityPos.x;
-    const dz = cameraPos.z - entityPos.z;
-    
-    // Calculate rotation to face camera (Y-axis only to prevent spinning)
-    const angle = Math.atan2(dx, dz) * (180 / Math.PI);
-    
-    // Apply rotation
-    this.el.setAttribute('rotation', `0 ${angle} 0`);
-  }
-});
-
-const TOPICS = [
-  { id:0, icon:"💼", title:"Workplace Rights", subtitle:"Your rights at work pay, dignity, and safety",
-    rights:[
-      {title:"Right to Equal Pay", text:"You are entitled to equal pay for equal work regardless of gender or race. Document pay disparities and report to a labor authority."},
-      {title:"Protection from Harassment", text:"Sexual harassment at work is illegal. You have the right to a safe, respectful workplace. Document incidents with dates and report to HR."},
-      {title:"Protection from Discrimination", text:"Employers cannot hire, fire, or demote you based on gender, race, religion, pregnancy, or disability."},
-      {title:"Maternity & Parental Leave", text:"Most countries guarantee parental leave. You cannot legally be fired for taking protected leave."},
-      {title:"Right to Organize", text:"You have the right to join a union and engage in collective bargaining without employer retaliation."},
-      {title:"Safe Working Conditions", text:"Employers must provide a safe workplace. You can refuse dangerous work without fear of termination."},
-    ],
-    resources:["Labor Board","EEOC (USA)","Employment Lawyer","Union Rep"],
-    keywords:["work","job","salary","pay","boss","fired","harassment","discrimination","leave","maternity","pregnant","promotion","office","equal","raise","wage"]
-  },
-  { id:1, icon:"🛡️", title:"Safety & Protection", subtitle:"Protecting yourself and your family from harm",
-    rights:[
-      {title:"Right to File a Police Report", text:"You have the right to report domestic violence, stalking, or assault. Officers are required to take your report seriously."},
-      {title:"Protection Orders", text:"Courts can issue emergency protection orders prohibiting an abuser from contacting or approaching you — often within 24 hours."},
-      {title:"Emergency Housing", text:"Domestic violence shelters provide free, confidential emergency housing. You don't need to press charges to access a shelter."},
-      {title:"Victim Compensation", text:"Many countries have victim compensation programs covering medical bills, lost wages, and counseling after violence."},
-      {title:"Confidentiality Rights", text:"Communications with domestic violence advocates are often legally protected and fully confidential."},
-      {title:"Right to Leave with Children", text:"You generally have the right to take your children when leaving a dangerous situation. Document the abuse carefully."},
-    ],
-    resources:["National DV Hotline: 1-800-799-7233","Local Shelter","Legal Aid","Crisis Text Line: Text HOME to 741741"],
-    keywords:["abuse","violence","hurt","danger","partner","husband","boyfriend","hit","scared","afraid","restraining","shelter","safe","attack","stalk","threat","beat"]
-  },
-  { id:2, icon:"🏠", title:"Housing & Eviction", subtitle:"Your rights as a tenant and renter",
-    rights:[
-      {title:"Right to Habitable Housing", text:"Landlords must maintain rentals in livable condition — working heat, plumbing, no pests. Document all issues in writing."},
-      {title:"Protection from Illegal Eviction", text:"Landlords cannot evict you without proper legal notice (usually 30-60 days) and a court order. Changing locks illegally is a crime."},
-      {title:"Protection from Discrimination", text:"Landlords cannot refuse to rent based on gender, race, religion, family status, disability, or national origin."},
-      {title:"Security Deposit Return", text:"Landlords must return your deposit within a set timeframe (usually 14-30 days) with an itemized list of deductions."},
-      {title:"Privacy Rights", text:"Landlords must give advance notice (usually 24-48 hours) before entering your unit, except in emergencies."},
-      {title:"Retaliation Protection", text:"Landlords cannot evict or raise rent in retaliation for you reporting housing code violations."},
-    ],
-    resources:["Tenant Rights Org","Housing Authority","Legal Aid","Rent Board"],
-    keywords:["rent","landlord","eviction","evict","house","apartment","flat","deposit","lease","repair","mold","heat","tenant","kicked out","homeless","renting"]
-  },
-  { id:3, icon:"🌍", title:"Immigration & Status", subtitle:"Your rights regardless of immigration status",
-    rights:[
-      {title:"Constitutional Rights Apply to All", text:"In the USA and many countries, constitutional protections apply to everyone on their soil regardless of immigration status."},
-      {title:"Right to Remain Silent", text:"You have the right to remain silent when questioned by immigration officers. You are not required to answer questions about your status."},
-      {title:"Right to an Attorney", text:"If detained, you have the right to contact a lawyer. You may also contact your country's consulate."},
-      {title:"Right to Asylum", text:"If you fear persecution in your home country, you have the right to apply for asylum at a port of entry or within 1 year of arrival (USA)."},
-      {title:"VAWA Protections", text:"Survivors of domestic violence may self-petition for immigration status independently of their abuser under VAWA."},
-      {title:"Emergency Medical Care", text:"Hospitals must provide emergency care regardless of immigration status or ability to pay."},
-    ],
-    resources:["USCIS (USA)","Immigration Lawyer","ACLU","RAICES"],
-    keywords:["visa","immigration","deport","asylum","citizen","green card","status","undocumented","daca","border","detained","ice","passport","refugee","migrate","papers"]
-  },
-  { id:4, icon:"🌸", title:"Reproductive Rights", subtitle:"Your rights over your body and family",
-    rights:[
-      {title:"Right to Healthcare Information", text:"You have the right to accurate, complete reproductive health information without judgment from any healthcare provider."},
-      {title:"Pregnancy Discrimination Protection", text:"Employers cannot fire, demote, or penalize you for being pregnant. Pregnancy is a legally protected characteristic."},
-      {title:"Custody and Parental Rights", text:"Both parents generally have rights to custody and visitation. Courts always decide based on the best interests of the child."},
-      {title:"Maternal Healthcare Rights", text:"You have the right to respectful, informed maternity care. You can refuse procedures and request different providers."},
-      {title:"Breastfeeding Rights", text:"Many jurisdictions protect the right to breastfeed in public and require employers to provide time and space for pumping."},
-      {title:"Reproductive Healthcare Access", text:"You have the right to access reproductive healthcare. Many organizations offer free or low-cost services based on income."},
-    ],
-    resources:["Planned Parenthood","ACLU","National Women's Law Center","Legal Aid"],
-    keywords:["pregnant","pregnancy","baby","birth","abortion","reproductive","custody","child","healthcare","body","breastfeed","maternity","gynecologist","contraception","period"]
-  },
-  { id:5, icon:"⚖️", title:"General Legal Rights", subtitle:"Fundamental rights that protect everyone",
-    rights:[
-      {title:"Right to Due Process", text:"The government must follow fair procedures before depriving you of life, liberty, or property. You have the right to be heard in court."},
-      {title:"Right to Equal Treatment", text:"Laws must be applied equally to all people. Discrimination by government based on protected characteristics is unconstitutional."},
-      {title:"Access to Legal Aid", text:"You have the right to access the courts. Many areas have free legal aid organizations for those who cannot afford a lawyer."},
-      {title:"Right to an Attorney", text:"In criminal proceedings, you have the right to an attorney. If you cannot afford one, one must be appointed for you."},
-      {title:"Freedom from Unreasonable Search", text:"Police generally need a warrant or your consent to search your home, car, or belongings. You can legally decline a search."},
-      {title:"Right to File Complaints", text:"You have the right to file complaints against officials, police, or businesses without fear of retaliation."},
-    ],
-    resources:["Legal Aid Society","ACLU","Law School Clinics","Ombudsman Office"],
-    keywords:["rights","law","court","lawyer","attorney","police","arrest","sue","legal","judge","case","complaint","justice","government","constitution","search","warrant"]
-  },
-];
-
-const SUGGESTIONS = [
-  ["What are my workplace rights?","I'm being paid unfairly","My boss is harassing me","I was fired unfairly"],
-  ["I'm in danger, what do I do?","How do I get a restraining order?","I need emergency housing","What counts as abuse?"],
-  ["My landlord wants to evict me","How do I get my deposit back?","My landlord entered without notice","What is habitability?"],
-  ["What rights do I have without papers?","How do I apply for asylum?","Can I be deported?","I need an immigration lawyer"],
-  ["I'm pregnant and scared I'll lose my job","What are my custody rights?","Can I breastfeed at work?","I need reproductive healthcare"],
-  ["What is due process?","Can I refuse a police search?","How do I find free legal help?","I want to file a complaint"],
-];
-
-// ===== LOCALSTORAGE CHAT PERSISTENCE =====
-const STORAGE_KEY = 'herRights_chatHistory';
-
-// Save chat history to localStorage
-function saveChatHistory() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory));
-  } catch (e) {
-    console.error('Failed to save chat history:', e);
-  }
-}
-
-// Load chat history from localStorage
-function loadChatHistory() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      chatHistory = JSON.parse(saved);
-      return true;
-    }
-  } catch (e) {
-    console.error('Failed to load chat history:', e);
-  }
-  return false;
-}
-
-// ===== AUDIO NARRATION (Web Speech API) =====
-let currentUtterance = null;
-const synth = window.speechSynthesis;
-
-function createAudioButton(cardElement, text) {
-  const button = document.createElement('button');
-  button.className = 'listen-btn';
-  button.innerHTML = '🔊 Listen';
-  button.style.marginTop = '8px';
-  button.style.padding = '6px 12px';
-  button.style.background = 'linear-gradient(135deg, #ff2d78, #ff6b9d)';
-  button.style.color = '#ffffff';
-  button.style.border = 'none';
-  button.style.borderRadius = '6px';
-  button.style.fontSize = '12px';
-  button.style.cursor = 'pointer';
-  button.style.fontWeight = '500';
-  button.style.transition = 'all 0.2s';
-  button.style.width = '100%';
+  // DATA
+  const TOPICS = [
+    { id:0, icon:"💼", title:"Workplace Rights", subtitle:"Your rights at work pay, dignity, and safety",
+      rights:[
+        {title:"Right to Equal Pay", text:"You are entitled to equal pay for equal work regardless of gender or race. Document pay disparities and report to a labor authority."},
+        {title:"Protection from Harassment", text:"Sexual harassment at work is illegal. You have the right to a safe, respectful workplace. Document incidents with dates and report to HR."},
+        {title:"Protection from Discrimination", text:"Employers cannot hire, fire, or demote you based on gender, race, religion, pregnancy, or disability."},
+        {title:"Maternity & Parental Leave", text:"Most countries guarantee parental leave. You cannot legally be fired for taking protected leave."},
+        {title:"Right to Organize", text:"You have the right to join a union and engage in collective bargaining without employer retaliation."},
+        {title:"Safe Working Conditions", text:"Employers must provide a safe workplace. You can refuse dangerous work without fear of termination."},
+      ],
+      resources:["Labor Board","EEOC (USA)","Employment Lawyer","Union Rep"],
+      keywords:["work","job","salary","pay","boss","fired","harassment","discrimination","leave","maternity","pregnant","promotion","office","equal","raise","wage"]
+    },
+    { id:1, icon:"🛡️", title:"Safety & Protection", subtitle:"Protecting yourself and your family from harm",
+      rights:[
+        {title:"Right to File a Police Report", text:"You have the right to report domestic violence, stalking, or assault. Officers are required to take your report seriously."},
+        {title:"Protection Orders", text:"Courts can issue emergency protection orders prohibiting an abuser from contacting or approaching you — often within 24 hours."},
+        {title:"Emergency Housing", text:"Domestic violence shelters provide free, confidential emergency housing. You don't need to press charges to access a shelter."},
+        {title:"Victim Compensation", text:"Many countries have victim compensation programs covering medical bills, lost wages, and counseling after violence."},
+        {title:"Confidentiality Rights", text:"Communications with domestic violence advocates are often legally protected and fully confidential."},
+        {title:"Right to Leave with Children", text:"You generally have the right to take your children when leaving a dangerous situation. Document the abuse carefully."},
+      ],
+      resources:["National DV Hotline: 1-800-799-7233","Local Shelter","Legal Aid","Crisis Text Line: Text HOME to 741741"],
+      keywords:["abuse","violence","hurt","danger","partner","husband","boyfriend","hit","scared","afraid","restraining","shelter","safe","attack","stalk","threat","beat"]
+    },
+    { id:2, icon:"🏠", title:"Housing & Eviction", subtitle:"Your rights as a tenant and renter",
+      rights:[
+        {title:"Right to Habitable Housing", text:"Landlords must maintain rentals in livable condition — working heat, plumbing, no pests. Document all issues in writing."},
+        {title:"Protection from Illegal Eviction", text:"Landlords cannot evict you without proper legal notice (usually 30-60 days) and a court order. Changing locks illegally is a crime."},
+        {title:"Protection from Discrimination", text:"Landlords cannot refuse to rent based on gender, race, religion, family status, disability, or national origin."},
+        {title:"Security Deposit Return", text:"Landlords must return your deposit within a set timeframe (usually 14-30 days) with an itemized list of deductions."},
+        {title:"Privacy Rights", text:"Landlords must give advance notice (usually 24-48 hours) before entering your unit, except in emergencies."},
+        {title:"Retaliation Protection", text:"Landlords cannot evict or raise rent in retaliation for you reporting housing code violations."},
+      ],
+      resources:["Tenant Rights Org","Housing Authority","Legal Aid","Rent Board"],
+      keywords:["rent","landlord","eviction","evict","house","apartment","flat","deposit","lease","repair","mold","heat","tenant","kicked out","homeless","renting"]
+    },
+    { id:3, icon:"🌍", title:"Immigration & Status", subtitle:"Your rights regardless of immigration status",
+      rights:[
+        {title:"Constitutional Rights Apply to All", text:"In the USA and many countries, constitutional protections apply to everyone on their soil regardless of immigration status."},
+        {title:"Right to Remain Silent", text:"You have the right to remain silent when questioned by immigration officers. You are not required to answer questions about your status."},
+        {title:"Right to an Attorney", text:"If detained, you have the right to contact a lawyer. You may also contact your country's consulate."},
+        {title:"Right to Asylum", text:"If you fear persecution in your home country, you have the right to apply for asylum at a port of entry or within 1 year of arrival (USA)."},
+        {title:"VAWA Protections", text:"Survivors of domestic violence may self-petition for immigration status independently of their abuser under VAWA."},
+        {title:"Emergency Medical Care", text:"Hospitals must provide emergency care regardless of immigration status or ability to pay."},
+      ],
+      resources:["USCIS (USA)","Immigration Lawyer","ACLU","RAICES"],
+      keywords:["visa","immigration","deport","asylum","citizen","green card","status","undocumented","daca","border","detained","ice","passport","refugee","migrate","papers"]
+    },
+    { id:4, icon:"🌸", title:"Reproductive Rights", subtitle:"Your rights over your body and family",
+      rights:[
+        {title:"Right to Healthcare Information", text:"You have the right to accurate, complete reproductive health information without judgment from any healthcare provider."},
+        {title:"Pregnancy Discrimination Protection", text:"Employers cannot fire, demote, or penalize you for being pregnant. Pregnancy is a legally protected characteristic."},
+        {title:"Custody and Parental Rights", text:"Both parents generally have rights to custody and visitation. Courts always decide based on the best interests of the child."},
+        {title:"Maternal Healthcare Rights", text:"You have the right to respectful, informed maternity care. You can refuse procedures and request different providers."},
+        {title:"Breastfeeding Rights", text:"Many jurisdictions protect the right to breastfeed in public and require employers to provide time and space for pumping."},
+        {title:"Reproductive Healthcare Access", text:"You have the right to access reproductive healthcare. Many organizations offer free or low-cost services based on income."},
+      ],
+      resources:["Planned Parenthood","ACLU","National Women's Law Center","Legal Aid"],
+      keywords:["pregnant","pregnancy","baby","birth","abortion","reproductive","custody","child","healthcare","body","breastfeed","maternity","gynecologist","contraception","period"]
+    },
+    { id:5, icon:"⚖️", title:"General Legal Rights", subtitle:"Fundamental rights that protect everyone",
+      rights:[
+        {title:"Right to Due Process", text:"The government must follow fair procedures before depriving you of life, liberty, or property. You have the right to be heard in court."},
+        {title:"Right to Equal Treatment", text:"Laws must be applied equally to all people. Discrimination by government based on protected characteristics is unconstitutional."},
+        {title:"Access to Legal Aid", text:"You have the right to access the courts. Many areas have free legal aid organizations for those who cannot afford a lawyer."},
+        {title:"Right to an Attorney", text:"In criminal proceedings, you have the right to an attorney. If you cannot afford one, one must be appointed for you."},
+        {title:"Freedom from Unreasonable Search", text:"Police generally need a warrant or your consent to search your home, car, or belongings. You can legally decline a search."},
+        {title:"Right to File Complaints", text:"You have the right to file complaints against officials, police, or businesses without fear of retaliation."},
+      ],
+      resources:["Legal Aid Society","ACLU","Law School Clinics","Ombudsman Office"],
+      keywords:["rights","law","court","lawyer","attorney","police","arrest","sue","legal","judge","case","complaint","justice","government","constitution","search","warrant"]
+    },
+  ];
   
-  button.addEventListener('mouseover', () => {
-    button.style.transform = 'translateY(-2px)';
-    button.style.boxShadow = '0 4px 12px rgba(255, 45, 120, 0.4)';
-  });
-  button.addEventListener('mouseout', () => {
-    button.style.transform = 'translateY(0)';
-    button.style.boxShadow = 'none';
+  const COUNTRIES = ["Pakistan", "India", "USA", "UK", "Canada", "Australia", "Germany", "France", "UAE", "Saudi Arabia", "Bangladesh", "Nigeria", "Kenya", "South Africa", "Brazil", "Mexico", "Philippines", "Indonesia", "Malaysia", "Other"];
+  
+  const SUGGESTIONS = [
+    ["What are my workplace rights?","I'm being paid unfairly","My boss is harassing me","I was fired unfairly"],
+    ["I'm in danger, what do I do?","How do I get a restraining order?","I need emergency housing","What counts as abuse?"],
+    ["My landlord wants to evict me","How do I get my deposit back?","My landlord entered without notice","What is habitability?"],
+    ["What rights do I have without papers?","How do I apply for asylum?","Can I be deported?","I need an immigration lawyer"],
+    ["I'm pregnant and scared I'll lose my job","What are my custody rights?","Can I breastfeed at work?","I need reproductive healthcare"],
+    ["What is due process?","Can I refuse a police search?","How do I find free legal help?","I want to file a complaint"],
+  ];
+  
+  // STATE
+  let userCountry = localStorage.getItem('userCountry') || null;
+  let exploredTopics = JSON.parse(localStorage.getItem('exploredTopics')) || [];
+  let currentTopic = null;
+  let chatHistory = {};
+  
+  // INIT
+  window.addEventListener('DOMContentLoaded', function() {
+    initCountries();
+    initSituation();
+    generateStars();
   });
   
-  button.addEventListener('click', () => {
-    if (synth.speaking && currentUtterance) {
-      synth.cancel();
-      button.innerHTML = '🔊 Listen';
-      currentUtterance = null;
-    } else {
-      speakText(text, button);
-    }
-  });
-  
-  return button;
-}
-
-function speakText(text, button) {
-  if (synth.speaking) {
-    synth.cancel();
-  }
-  
-  currentUtterance = new SpeechSynthesisUtterance(text);
-  currentUtterance.rate = 0.95;
-  currentUtterance.pitch = 1;
-  currentUtterance.volume = 1;
-  
-  currentUtterance.onstart = () => {
-    button.innerHTML = '⏸ Stop';
-  };
-  
-  currentUtterance.onend = () => {
-    button.innerHTML = '🔊 Listen';
-    currentUtterance = null;
-  };
-  
-  synth.speak(currentUtterance);
-}
-
-// CHATBOT (no API key)
-function getBotReply(msg, topic) {
-  const m = msg.toLowerCase().trim();
-  const greetings = ["hi","hello","hey","hii","hola","salam","assalam"];
-  const thanks = ["thank","thanks","thx","appreciate","helpful","great","good"];
-
-  if (greetings.some(g => m.startsWith(g) || m === g))
-    return `Hi there! 💛 I'm HerRights AI. I'm here to help you understand **${topic.title}**.\n\nWhat would you like to know? You can ask about your situation, what steps to take, or what your rights are.`;
-
-  if (thanks.some(t => m.includes(t)))
-    return `You're so welcome! 🌸 Knowing your rights is the first step to protecting them. Is there anything else I can help you understand?`;
-
-  if (m.includes("emergency") || m.includes("danger") || m.includes("help me") || m.includes("scared") || m.includes("urgent"))
-    return `🆘 **If you are in immediate danger, please call emergency services (911 / 999 / 112) right now.**\n\n**Support resources:**\n• National DV Hotline (USA): 1-800-799-7233\n• Crisis Text Line: Text HOME to 741741`;
-
-  if ((m.includes("what") && m.includes("right")) || m.includes("my rights") || m.includes("rights"))
-    return `Under **${topic.title}**, your key rights include:\n\n${topic.rights.slice(0,3).map(r=>`• **${r.title}**: ${r.text.split('.')[0]}.`).join('\n\n')}\n\nWould you like more detail on any of these?`;
-
-  if (m.includes("lawyer") || m.includes("attorney") || m.includes("free legal") || m.includes("legal help") || m.includes("afford"))
-    return `Finding free or affordable legal help:\n\n• **Legal Aid Society** — free for those who qualify by income\n• **Law School Clinics** — supervised students, often free\n• **ACLU** — civil rights focus\n\nMany consultations are free. Don't give up!`;
-
-  if (m.includes("document") || m.includes("evidence") || m.includes("proof") || m.includes("record"))
-    return `Documenting your situation is crucial! Here's how:\n\n• **Write it down** — date, time, location, what happened\n• **Save messages/emails** — screenshot everything immediately\n• **Keep copies** — store in a safe place\n• **Witness info** — note names of anyone who saw it\n\nThese records are powerful evidence.`;
-
-  if (m.includes("discriminat") || m.includes("unfair") || m.includes("treated differently") || m.includes("bias"))
-    return `Discrimination is illegal. Here's what to do:\n\n1. **Document every incident** — dates, witnesses, what was said\n2. **Report internally** — file a formal complaint with HR or management\n3. **File externally** — contact your labor board or EEOC\n4. **Get help** — consult with an employment lawyer\n\nYou have rights and protections.`;
-
-  if (m.includes("what should i do") || m.includes("what do i do") || m.includes("help") || m.includes("advice") || m.includes("next step"))
-    return `Here are the key steps I'd recommend:\n\n1. **Stay safe first** — if in danger, contact emergency services\n2. **Document everything** — write down what happened with dates\n3. **Know your rights** — understand what protections apply to you\n4. **Get support** — reach out to an advocate or lawyer\n5. **Take action** — file a report or complaint when ready\n\nYou're not alone in this.`;
-
-  // Match against rights content
-  const matched = topic.rights.find(r =>
-    r.title.toLowerCase().split(' ').some(w => m.includes(w) && w.length > 3)
-  );
-  if (matched)
-    return `**${matched.title}**\n\n${matched.text}\n\n💡 This is general information. For your specific situation, always consult a qualified lawyer.`;
-
-  // Cross-topic keyword match
-  for (const t of TOPICS) {
-    if (t.id !== topic.id && t.keywords.some(k => m.includes(k) && k.length > 4)) {
-      return `That sounds like it may relate to **${t.title}**! \n\n${t.rights[0].text}\n\nYou can explore the **${t.title}** section using the navigation buttons below. 🌸`;
+  // Generate stars in A-Frame scene
+  function generateStars() {
+    const container = document.getElementById('stars-container');
+    for(let i = 0; i < 400; i++) {
+      const star = document.createElement('a-sphere');
+      const r = 25 + Math.random() * 25;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * Math.PI;
+      const colors = ['#ffffff', '#ff2d78', '#ff6b9d'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      
+      star.setAttribute('position', {
+        x: r * Math.sin(phi) * Math.cos(theta),
+        y: r * Math.cos(phi),
+        z: r * Math.sin(phi) * Math.sin(theta)
+      });
+      star.setAttribute('radius', 0.02 + Math.random() * 0.06);
+      star.setAttribute('material', {
+        color: color,
+        emissive: color,
+        emissiveIntensity: 0.5 + Math.random() * 0.5,
+        opacity: 0.5 + Math.random() * 0.5
+      });
+      star.setAttribute('animation', {
+        property: 'material.opacity',
+        from: 0.3,
+        to: 1.0,
+        dur: 2000 + Math.random() * 3000,
+        dir: 'alternate',
+        loop: true,
+        easing: 'easeInOutSine'
+      });
+      container.appendChild(star);
     }
   }
-
-  return `I'm here to help with **${topic.title}**! 💛\n\nTry asking me:\n• "What are my rights?"\n• "What should I do if..."\n• "How do I find a lawyer?"\n• "What counts as discrimination?"\n\nI'm listening.`;
-}
-
-// STATE
-let currentTopic = null;
-let chatHistory = {};
-
-function enterScene() {
-  loadChatHistory(); // Restore chat history
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('scene').style.display = 'block';
-  document.getElementById('hud').style.display = 'flex';
-  document.getElementById('topic-nav').style.display = 'flex';
-  document.getElementById('xhair').style.display = 'block';
   
-  // Generate premium stars with pulsing animation
-  const container = document.getElementById('stars-container');
-  for(let i = 0; i < 400; i++) {
-    const star = document.createElement('a-sphere');
-    const r = 20 + Math.random() * 20;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI;
+  // SCREEN NAVIGATION
+  function goToScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
     
-    // Random white or pink colors for stars
-    const colors = ['#ffffff', '#ff2d78', '#ff6b9d'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    
-    star.setAttribute('position', {
-      x: r * Math.sin(phi) * Math.cos(theta),
-      y: r * Math.cos(phi),
-      z: r * Math.sin(phi) * Math.sin(theta)
-    });
-    star.setAttribute('radius', 0.02 + Math.random() * 0.06);
-    star.setAttribute('material', {
-      color: color,
-      emissive: color,
-      emissiveIntensity: 0.5 + Math.random() * 0.5,
-      opacity: 0.5 + Math.random() * 0.5
-    });
-    // Pulsing animation: opacity between 0.3 and 1.0
-    star.setAttribute('animation', {
-      property: 'material.opacity',
-      from: 0.3,
-      to: 1.0,
-      dur: 2000 + Math.random() * 3000,
-      dir: 'alternate',
-      loop: true,
-      easing: 'easeInOutSine'
-    });
-    container.appendChild(star);
+    if (name === 'chat') {
+      setTimeout(() => document.getElementById('chat-input').focus(), 100);
+    }
   }
   
-  setTimeout(() => {
-    for (let i = 0; i < 6; i++) {
-      const el = document.getElementById('p' + i);
-      if (el) { const idx = i; el.addEventListener('click', () => openTopic(idx)); }
+  // COUNTRY SCREEN
+  function initCountries() {
+    const grid = document.getElementById('countries-grid');
+    grid.innerHTML = COUNTRIES.map(c => 
+      `<div class="country-chip" data-country="${c}" onclick="selectCountry('${c}')">${c}</div>`
+    ).join('');
+    if (userCountry) {
+      document.querySelector(`[data-country="${userCountry}"]`).classList.add('selected');
     }
-  }, 500);
-}
-
-function openTopic(idx) {
-  currentTopic = TOPICS[idx];
-  document.getElementById('p-icon').textContent = currentTopic.icon;
-  document.getElementById('p-title').textContent = currentTopic.title;
-  document.getElementById('p-sub').textContent = currentTopic.subtitle;
-  document.getElementById('rights-cards').innerHTML = currentTopic.rights.map(r =>
-    `<div class="right-card"><div class="right-card-title">${r.title}</div><div class="right-card-text">${r.text}</div></div>`
-  ).join('');
-  document.getElementById('resource-chips').innerHTML = currentTopic.resources.map(r =>
-    `<div class="resource-chip">${r}</div>`
-  ).join('');
-  if (!chatHistory[idx]) {
-    chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. 💛 I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or what your rights are.`}];
   }
-  renderChat(idx);
-  document.getElementById('suggestions').innerHTML = SUGGESTIONS[idx].map(s =>
-    `<div class="sug-chip" onclick="sendSuggestion(\`${s.replace(/`/g,'\\`')}\`)">${s}</div>`
-  ).join('');
-  document.getElementById('side-panel').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
-  switchTab('chat');
-  document.querySelectorAll('.t-pill').forEach((p,i) => p.classList.toggle('active', i===idx));
+  
+  function filterCountries() {
+    const query = document.getElementById('country-search').value.toLowerCase();
+    document.querySelectorAll('.country-chip').forEach(chip => {
+      const matches = chip.dataset.country.toLowerCase().includes(query);
+      chip.style.display = matches ? 'flex' : 'none';
+    });
+  }
+  
+  function selectCountry(country) {
+    document.querySelectorAll('.country-chip').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`[data-country="${country}"]`).classList.add('selected');
+    userCountry = country;
+    localStorage.setItem('userCountry', country);
+    document.getElementById('btn-country-continue').disabled = false;
+  }
+  
+  function continueFromCountry() {
+    goToScreen('situation');
+  }
+  
+  // SITUATION SCREEN
+  function initSituation() {
+    const grid = document.getElementById('situation-grid');
+    grid.innerHTML = TOPICS.map(t => 
+      `<div class="situation-card ${exploredTopics.includes(t.id) ? 'visited' : ''}" onclick="openTopic(${t.id})">
+        <div class="situation-icon">${t.icon}</div>
+        <div class="situation-name">${t.title}</div>
+        <div class="situation-desc">${t.subtitle}</div>
+      </div>`
+    ).join('');
+    updateProgress();
+  }
+  
+  function updateProgress() {
+    const explored = exploredTopics.length;
+    document.getElementById('progress-fill').style.width = (explored / 6 * 100) + '%';
+    document.getElementById('progress-text').textContent = `You've explored ${explored} of 6 areas`;
+  }
+  
+  // CHAT SCREEN
+  function getBotReply(msg, topic) {
+    const m = msg.toLowerCase().trim();
+    const greetings = ["hi","hello","hey","hii","hola","salam","assalam"];
+    const thanks = ["thank","thanks","thx","appreciate","helpful","great","good"];
 
-  // Add audio buttons after rendering
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.right-card');
-    cards.forEach(card => {
-      const titleEl = card.querySelector('.right-card-title');
-      const textEl = card.querySelector('.right-card-text');
-      if (titleEl && textEl && !card.querySelector('.listen-btn')) {
-        const fullText = `${titleEl.textContent}. ${textEl.textContent}`;
-        const audioBtn = createAudioButton(card, fullText);
-        card.appendChild(audioBtn);
+    if (greetings.some(g => m.startsWith(g) || m === g))
+      return `Hi there! 💛 I'm HerRights AI. I'm here to help you understand **${topic.title}**.\n\nWhat would you like to know? You can ask about your situation, what steps to take, or what your rights are.`;
+
+    if (thanks.some(t => m.includes(t)))
+      return `You're so welcome! 🌸 Knowing your rights is the first step to protecting them. Is there anything else I can help you understand?`;
+
+    if (m.includes("emergency") || m.includes("danger") || m.includes("help me") || m.includes("scared") || m.includes("urgent"))
+      return `🆘 **If you are in immediate danger, please call emergency services (911 / 999 / 112) right now.**\n\n**Support resources:**\n• National DV Hotline (USA): 1-800-799-7233\n• Crisis Text Line: Text HOME to 741741\n\nYou can also access the emergency help screen anytime by clicking the red "🆘 Help" button.`;
+
+    if ((m.includes("what") && m.includes("right")) || m.includes("my rights") || m.includes("rights"))
+      return `Under **${topic.title}**, your key rights include:\n\n${topic.rights.slice(0,3).map(r=>`• **${r.title}**: ${r.text.split('.')[0]}.`).join('\n\n')}\n\nWould you like more detail on any of these?`;
+
+    if (m.includes("lawyer") || m.includes("attorney") || m.includes("free legal") || m.includes("legal help") || m.includes("afford"))
+      return `Finding free or affordable legal help:\n\n• **Legal Aid Society** — free for those who qualify by income\n• **Law School Clinics** — supervised students, often free\n• **ACLU** — civil rights support\n• **Pro Bono Programs** — lawyers volunteering free work\n\nCall your local bar association for referrals to free legal aid.`;
+
+    if (m.includes("document") || m.includes("evidence") || m.includes("proof") || m.includes("record"))
+      return `Documenting your situation is crucial! Here's how:\n\n• **Write it down** — date, time, location, what happened\n• **Save messages/emails** — screenshot everything immediately\n• **Keep photos** — of injuries, damage, or conditions\n• **Find witnesses** — get their names and contact info\n• **Save receipts** — for medical bills, repairs, legal fees\n\nStored documentation strengthens any legal case.`;
+
+    if (m.includes("discriminat") || m.includes("unfair") || m.includes("treated differently") || m.includes("bias"))
+      return `Discrimination is illegal. Here's what to do:\n\n1. **Document every incident** — dates, witnesses, what was said\n2. **Report internally** — file a formal complaint with HR or management\n3. **Report externally** — file with EEOC (USA) or equivalent agency\n4. **Keep records** — payslips, emails, performance reviews\n5. **Seek legal help** — civil rights lawyers often work on contingency\n\nDon't retaliate or resign — that weakens your case.`;
+
+    if (m.includes("what should i do") || m.includes("what do i do") || m.includes("help") || m.includes("advice") || m.includes("next step"))
+      return `Here are the key steps I'd recommend:\n\n1. **Stay safe first** — if in danger, contact emergency services\n2. **Document everything** — write down what happened with dates\n3. **Know your rights** — the information here is a starting point\n4. **Seek legal counsel** — get a lawyer's specific advice for your situation\n5. **Reach out for support** — talk to trusted friends, family, or counselors\n\nYou deserve to be treated fairly. Don't give up. 💛`;
+
+    const matched = topic.rights.find(r =>
+      r.title.toLowerCase().split(' ').some(w => m.includes(w) && w.length > 3)
+    );
+    if (matched)
+      return `**${matched.title}**\n\n${matched.text}\n\n💡 This is general information. For your specific situation, always consult a qualified lawyer.`;
+
+    for (const t of TOPICS) {
+      if (t.id !== topic.id && t.keywords.some(k => m.includes(k) && k.length > 4)) {
+        return `That sounds like it may relate to **${t.title}**! \n\n${t.rights[0].text}\n\nYou can explore the **${t.title}** section anytime. 🌸`;
       }
-    });
-  }, 50);
-}
+    }
 
-function closePanel() {
-  document.getElementById('side-panel').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-  document.querySelectorAll('.t-pill').forEach(p => p.classList.remove('active'));
-}
-
-function switchTab(tab) {
-  const r = document.getElementById('tab-rights');
-  const c = document.getElementById('tab-chat');
-  document.getElementById('tab-btn-rights').classList.toggle('active', tab==='rights');
-  document.getElementById('tab-btn-chat').classList.toggle('active', tab==='chat');
-  if (tab === 'rights') {
-    r.style.display = 'block'; c.style.display = 'none'; c.classList.remove('show');
-  } else {
-    r.style.display = 'none'; c.style.display = 'flex'; c.classList.add('show');
-    document.getElementById('chat-input').focus();
+    return `I'm here to help with **${topic.title}**! 💛\n\nTry asking me:\n• "What are my rights?"\n• "What should I do if..."\n• "How do I find a lawyer?"\n• "What counts as discrimination?"\n\nI'm always here to help. 🌸`;
   }
-}
-
-function renderChat(idx) {
-  const msgs = chatHistory[idx] || [];
-  const el = document.getElementById('chat-messages');
-  el.innerHTML = msgs.map(m => `
-    <div class="msg ${m.role}">
-      <div class="msg-avatar">${m.role==='bot'?'⚖️':'👤'}</div>
-      <div class="msg-bubble">${m.text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>
-    </div>`).join('');
-  el.scrollTop = el.scrollHeight;
-}
-
-function sendSuggestion(text) {
-  document.getElementById('chat-input').value = text;
-  switchTab('chat');
-  sendChat();
-}
-
-async function sendChat() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if (!msg || !currentTopic) return;
-  const idx = currentTopic.id;
-  input.value = '';
-  chatHistory[idx].push({role:'user', text:msg});
-  renderChat(idx);
-  const el = document.getElementById('chat-messages');
-  const typing = document.createElement('div');
-  typing.className = 'msg bot'; typing.id = 'typing';
-  typing.innerHTML = `<div class="msg-avatar">⚖️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  el.appendChild(typing); el.scrollTop = el.scrollHeight;
-  document.getElementById('send-btn').disabled = true;
-  await new Promise(r => setTimeout(r, 700 + Math.random()*600));
-  document.getElementById('typing')?.remove();
-  chatHistory[idx].push({role:'bot', text: getBotReply(msg, currentTopic)});
-  renderChat(idx);
-  saveChatHistory();
-  document.getElementById('send-btn').disabled = false;
-  input.focus();
-}
-
-function flyTo(idx) {
-  openTopic(idx);
-  const pos = [{x:0,z:-4},{x:3.5,z:-2},{x:3.5,z:2},{x:0,z:4},{x:-3.5,z:2},{x:-3.5,z:-2}];
-  document.getElementById('rig').setAttribute('animation',{property:'position',to:`${pos[idx].x} 0 ${pos[idx].z}`,dur:800,easing:'easeInOutQuad'});
-}
+  
+  function openTopic(idx) {
+    currentTopic = TOPICS[idx];
+    
+    // Mark as explored
+    if (!exploredTopics.includes(idx)) {
+      exploredTopics.push(idx);
+      localStorage.setItem('exploredTopics', JSON.stringify(exploredTopics));
+      document.querySelector(`[data-topic="${idx}"]`)?.classList.add('visited');
+    }
+    
+    // Update chat header
+    document.getElementById('chat-icon').textContent = currentTopic.icon;
+    document.getElementById('chat-title').textContent = currentTopic.title;
+    document.getElementById('chat-country').textContent = userCountry ? `📍 ${userCountry}` : '📍 Global';
+    
+    // Update rights summary
+    document.getElementById('rights-summary-content').innerHTML = 
+      currentTopic.rights.slice(0, 3).map(r => `<div style="margin-bottom: 8px;"><strong>${r.title}:</strong> ${r.text.substring(0, 80)}...</div>`).join('');
+    
+    // Initialize chat
+    if (!chatHistory[idx]) {
+      chatHistory[idx] = [{role:'bot', text:`Hi! I'm HerRights AI. 💛 I'm here to help you understand **${currentTopic.title}**.\n\nAsk me anything about your situation, what steps to take, or what your rights are.`}];
+    }
+    
+    renderChat(idx);
+    
+    // Suggestions
+    document.getElementById('suggestions').innerHTML = SUGGESTIONS[idx].map(s =>
+      `<div class="sug-chip" onclick="sendSuggestion(\`${s.replace(/`/g, '\\`')}\`)">${s}</div>`
+    ).join('');
+    
+    goToScreen('chat');
+    updateProgress();
+  }
+  
+  function renderChat(idx) {
+    const msgs = chatHistory[idx] || [];
+    const el = document.getElementById('chat-messages');
+    el.innerHTML = msgs.map(m => `
+      <div class="msg ${m.role}">
+        <div class="msg-avatar">${m.role === 'bot' ? '⚖️' : '👤'}</div>
+        <div class="msg-bubble">${m.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>')}</div>
+      </div>`).join('');
+    el.scrollTop = el.scrollHeight;
+  }
+  
+  function sendSuggestion(text) {
+    document.getElementById('chat-input').value = text;
+    sendChat();
+  }
+  
+  async function sendChat() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg || !currentTopic) return;
+    
+    const idx = currentTopic.id;
+    input.value = '';
+    chatHistory[idx].push({role: 'user', text: msg});
+    renderChat(idx);
+    
+    const el = document.getElementById('chat-messages');
+    const typing = document.createElement('div');
+    typing.className = 'msg bot';
+    typing.id = 'typing';
+    typing.innerHTML = `<div class="msg-avatar">⚖️</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    el.appendChild(typing);
+    el.scrollTop = el.scrollHeight;
+    
+    document.getElementById('send-btn').disabled = true;
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 600));
+    
+    document.getElementById('typing')?.remove();
+    chatHistory[idx].push({role: 'bot', text: getBotReply(msg, currentTopic)});
+    renderChat(idx);
+    
+    document.getElementById('send-btn').disabled = false;
+    input.focus();
+  }
+  
+  function toggleRightsSummary() {
+    document.getElementById('rights-summary').classList.toggle('collapsed');
+  }
+  
+  function shareRights() {
+    const text = `${currentTopic.title}:\n\n${currentTopic.rights.slice(0, 3).map(r => `• ${r.title}: ${r.text.substring(0, 60)}...`).join('\n')}\n\nLearn more: HerRights.org`;
+    
+    if (navigator.share) {
+      navigator.share({title: 'HerRights', text: text});
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('Copied to clipboard! 📋');
+    }
+  }
+  
+  // Add data-topic attribute for tracking
+  function addDataTopicAttr() {
+    TOPICS.forEach(t => {
+      const card = document.querySelector(`.situation-card[onclick*="${t.id}"]`);
+      if (card) card.setAttribute('data-topic', t.id);
+    });
+  }
+  
+  // Call on init
+  setTimeout(addDataTopicAttr, 100);
 </script>
+
 </body>
 </html>
