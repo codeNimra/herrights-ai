@@ -1,10 +1,31 @@
-## 🌸 HerRights VR
+# ⚖️ HerRights
 
-> An immersive WebXR experience that puts women's legal rights in their hands literally.
+> Know your rights. Stay protected.
 
-**Live Demo:** (https://her-rights.netlify.app/)
-**Track:** AR / VR / XR
-**Event:** #75HER Challenge Hackathon CreateHER Fest 2026
+**🔗 Live Demo:** https://her-rights.netlify.app
+**💻 GitHub:** https://github.com/codeNimra/herrights-ai
+**📋 Devpost:** https://devpost.com/software/herrights-vr
+
+---
+
+## 🏆 GitHub Finish-Up-A-Thon: The Transformation Arc
+
+This project was originally built in **24 hours** under extreme pressure for the #75HER Hackathon (International Women's Day 2026). It worked — but it was not finished. This challenge was the forcing function to turn a hackathon demo into a production-quality app.
+
+### Before vs After — What GitHub Copilot Fixed
+
+| Missing Feature / Bug | How GitHub Copilot Solved It (Prompt Example) | Production Result |
+|---|---|---|
+| **Volatile chatbot state** — refreshing wiped entire conversation history | *"Add localStorage persistence for chat history keyed by topic ID, with JSON serialization and graceful fallback if storage is unavailable"* | Chat history now survives refresh and persists across sessions per topic |
+| **No onboarding** — users landed directly in confusing 3D scene with no guidance | *"Build a 3-step onboarding flow: welcome screen, country selector with search, situation picker with progress tracking"* | Beautiful 3-step onboarding with country context saved to localStorage |
+| **A-Frame bleeding through HTML** — 3D scene rendered behind UI causing visual corruption | *"Remove A-Frame entirely and replace with a pure CSS animated particle background using requestAnimationFrame"* | Clean CSS particle canvas — no WebGL conflicts, 60fps on low-end devices |
+| **No voice input** — mobile users had no hands-free option | *"Implement Web Speech API with error handling, interim results display, and graceful fallback toast for unsupported browsers"* | Voice-to-text input with live listening indicator and browser fallback |
+| **Zero accessibility** — no screen reader support, no keyboard navigation | *"Add ARIA roles, aria-labels, keyboard ESC handler for emergency overlay, and focus trap for modal dialogs"* | Full ARIA compliance, keyboard navigation, screen reader announcements |
+| **No PWA support** — app required browser, couldn't be installed | *"Generate an inline PWA manifest as a blob URL with service worker registration for offline caching"* | Installable on iOS and Android home screen, works fully offline |
+| **Monolithic file with no error isolation** — one JS error could break entire UI | *"Wrap all dynamic DOM injection and 3D entity operations in try-catch blocks with console.error fallbacks"* | Core HTML/CSS layout remains functional even if JS modules fail |
+| **No share functionality** — users couldn't send rights info to others | *"Implement Web Share API with clipboard fallback and a toast notification system"* | One-tap share on mobile, copy-to-clipboard on desktop |
+| **No progress tracking** — users didn't know how much they'd explored | *"Track explored topic IDs in localStorage, render a progress bar and checkmark badges on the situation screen"* | Progress bar + checkmarks persist across sessions |
+| **No emergency always-visible** — crisis resources buried in chat | *"Add a fixed-position emergency button on all screens with a fullscreen overlay, tel: links, and ESC keyboard handler"* | 🆘 Help button always visible, one click to crisis hotlines |
 
 ---
 
@@ -12,36 +33,47 @@
 
 | | |
 |---|---|
-| **User** | Women and marginalized people who face legal situations (workplace, safety, housing, immigration, reproductive rights) but lack access to clear, plain-language legal information |
-| **Problem** | Legal information is written in jargon designed for lawyers not for the everyday person who urgently needs to understand their rights |
-| **Constraints** | Must work without login, without an API key, without installation accessible on any device including VR headsets |
-| **Success Test** | A user with no legal background enters the 3D space, navigates to a topic that matches their situation, and can describe at least 3 of their rights and 1 next step within 3 minutes |
+| **User** | Women and marginalized people facing legal situations — workplace harassment, domestic abuse, eviction, immigration fears — with no access to plain-language legal guidance |
+| **Problem** | Legal information is written in jargon designed for lawyers. Most women don't know their rights until it's too late. |
+| **Constraints** | Must work without login, API key, or installation. Must be accessible on any device. Must work offline. |
+| **Success Test** | A user with no legal background opens the app, describes their situation, and receives 3 actionable rights + 1 next step — within 60 seconds |
 
 ---
 
 ## 💡 3-Line Pitch
 
-**Know your rights step inside them.**
-HerRights VR is an immersive 3D garden where women and marginalized communities walk through their legal rights with a built-in AI chatbot that answers questions in plain language, no login or API key required.
-Try it now → (https://her-rights.netlify.app/)
+**Know your rights — instantly, privately, for free.**
+HerRights is a progressive web app that guides women through their legal rights with a smart AI chatbot, voice input, and offline support — no login, no API key, no lawyer required.
+Try it now → https://her-rights.netlify.app
 
 ---
 
-## ✨ What It Does
+## ✨ What It Does (v2 — Finished Version)
 
-HerRights VR is a browser-based WebXR experience built with A-Frame. Users enter a warm, Women's Day-themed 3D garden and explore 6 glowing rights panels:
+### Onboarding Flow
+1. **Welcome screen** — animated logo, trust badges, get started CTA
+2. **Country selector** — 20 countries with search filter, saves to localStorage
+3. **Situation picker** — 6 topic cards with progress tracking and checkmarks
 
-- 💼 **Workplace Rights**  pay equity, harassment, discrimination, parental leave
-- 🛡️ **Safety & Protection**  domestic violence, restraining orders, shelters
-- 🏠 **Housing & Eviction**  tenant rights, illegal eviction, deposits
-- 🌍 **Immigration & Status**  asylum, DACA, rights regardless of status
-- 🌸 **Reproductive Rights**  healthcare access, custody, pregnancy discrimination
-- ⚖️ **General Legal Rights**  due process, equal treatment, access to justice
+### Chat Experience
+- Opens directly to chat — no tabs, no friction
+- Auto-greeting with topic context and country
+- Suggested question chips for users who don't know what to ask
+- Collapsible rights summary card (3 key rights per topic)
+- **Voice input** via Web Speech API — speak your situation
+- **Share button** via Web Share API or clipboard fallback
 
-Each panel opens a side panel with:
+### Always-On Safety
+- 🆘 Emergency button fixed on every screen
+- Crisis overlay with clickable tel: links (DV Hotline, Crisis Text, 911/999/112)
+- Persistent crisis footer bar on every screen
+- Emergency keywords in chat trigger immediate crisis response
 
-- **Your Rights tab**  6 detailed, plain-language rights cards + resources
-- **Ask HerRights AI tab**  a fully working keyword-based chatbot that answers questions, handles emergencies with crisis hotlines, and suggests follow-up questions. Zero API key. Zero login. Works offline.
+### Technical
+- **PWA** — installable on iOS/Android, works offline
+- **localStorage persistence** — chat history, country, progress all survive refresh
+- **CSS particle background** — replaces A-Frame for clean, conflict-free rendering
+- **Full ARIA compliance** — screen readers, keyboard navigation, focus management
 
 ---
 
@@ -49,8 +81,8 @@ Each panel opens a side panel with:
 
 | Goal | How |
 |---|---|
-| **SDG 5  Gender Equality** | Closing the legal knowledge gap specifically for women and marginalized communities |
-| **SDG 16  Justice & Strong Institutions** | Making legal systems understandable and accessible to everyone, not just those who can afford lawyers |
+| **SDG 5 — Gender Equality** | Closing the legal knowledge gap for women and marginalized communities globally |
+| **SDG 16 — Justice & Strong Institutions** | Making legal systems accessible to people who cannot afford a lawyer |
 
 ---
 
@@ -58,28 +90,27 @@ Each panel opens a side panel with:
 
 | Technology | Purpose |
 |---|---|
-| A-Frame 1.4.2 | WebXR 3D scene, VR headset support |
-| HTML / CSS / JavaScript | UI, chatbot logic, rights content |
-| Google Fonts | Playfair Display + DM Sans typography |
-| Netlify | Hosting and deployment |
+| HTML5 / CSS3 / Vanilla JS | Core app — zero dependencies, maximum compatibility |
+| Web Speech API | Voice input — hands-free accessibility |
+| Web Share API | Native share on mobile |
+| localStorage | Persistent chat history, country, progress |
+| PWA (manifest + service worker) | Installable, offline-capable |
+| CSS Animations + requestAnimationFrame | Particle background — replaces A-Frame |
+| Google Fonts CDN | Playfair Display + DM Sans |
+| Netlify | Free hosting with auto-deploy from GitHub |
 
-**No build step. No npm. No API key. No login required.**
-Works in any modern browser and in VR headsets via the built-in WebXR button.
+**No npm. No build step. No API key. No login. No cost.**
 
 ---
 
 ## 🚀 Quickstart
 
 ```bash
-# Clone the repo
-git clone https://github.com/codeNimra/herrights-vr
-cd herrights-vr
-
-# Open directly in browser no install needed
-open index.html
+# 1-command setup
+git clone https://github.com/codeNimra/herrights-ai && cd herrights-ai && open index.html
 ```
 
-Or just visit the live demo link above.
+Or visit the live demo: https://her-rights.netlify.app
 
 ---
 
@@ -87,54 +118,58 @@ Or just visit the live demo link above.
 
 ```
 index.html
-├── CSS Styles          — all visual design, responsive layout
-├── A-Frame Scene       — 3D garden, 6 rights panels, lighting, animations
-├── TOPICS data         — 6 topics × 6 rights cards + keywords + resources
-├── SUGGESTIONS data    — 4 suggested questions per topic
-├── getBotReply()       — rule-based chatbot (keyword matching, no API)
-└── UI Logic            — panel open/close, tab switching, chat rendering
+├── ── SECTION 1: CSS Variables & Reset
+├── ── SECTION 2: Animated Particle Background
+├── ── SECTION 3: Screen System (fade transitions)
+├── ── SECTION 4: Onboarding — Welcome Screen
+├── ── SECTION 5: Onboarding — Country Selector
+├── ── SECTION 6: Onboarding — Situation Picker
+���── ── SECTION 7: Chat Screen (full-screen)
+├── ── SECTION 8: Emergency Overlay
+├── ── SECTION 9: Persistent UI (Help button, Crisis footer)
+├── ── DATA: TOPICS array (6 topics × 6 rights + keywords)
+├── ── DATA: SUGGESTIONS array (4 chips per topic)
+├── ── LOGIC: getBotReply() — keyword chatbot engine
+├── ── LOGIC: Progress tracking (localStorage)
+├── ── LOGIC: Voice input (Web Speech API)
+├── ── LOGIC: Share (Web Share API + clipboard)
+└── ── LOGIC: PWA manifest (inline blob)
 ```
 
-The chatbot uses keyword matching against both user input and rights content. It handles greetings, thanks, emergencies, documentation questions, discrimination questions, and cross-topic detection all without any external API.
+Each section is wrapped in `try-catch` — if one module fails, the rest of the app continues functioning.
 
 ---
 
-## 📋 Key Technical Decisions
+## 📋 Technical Decisions
 
-See [DECISIONS.md](./DECISIONS.md) for the full decision log.
-
-| Decision | Choice | Reason |
-|---|---|---|
-| Single HTML file | No framework | Zero setup, drag-and-drop deploy, works offline |
-| A-Frame for 3D | WebXR standard | Works in browser AND VR headsets with no install |
-| Rule-based chatbot | No API key | Fully free, works offline, no billing required |
-| Panels in circle | Radius = 7 units | Comfortable viewing distance in both desktop and VR |
+See [DECISIONS.md](./DECISIONS.md) for the full log including performance optimization and Copilot prompts.
 
 ---
 
-## ⚠️ Known Issues & Next Steps
+## ⚠️ Known Issues & Roadmap
 
-- [ ] Panels face only one direction — need `look-at` component for full 360° viewing
-- [ ] Chatbot could be upgraded to use Goose AI or Anthropic when API access is available
-- [ ] Add multi-language support (Arabic, Spanish, French) major accessibility gap
-- [ ] Add audio narration of rights for users with reading difficulties
-- [ ] Mobile touch controls need improvement for phone-based VR (Google Cardboard)
+- [ ] Upgrade chatbot to real LLM (Goose / Anthropic API) when billing available
+- [ ] Add Urdu, Arabic, Spanish, French translations
+- [ ] Verify legal content with qualified lawyers per jurisdiction
+- [ ] Add more topics: disability rights, education rights, healthcare
+- [ ] Text-to-speech narration for low-literacy users
 
 ---
 
 ## 📜 License
 
-MIT License see [LICENSE](./LICENSE)
+MIT License — see [LICENSE](./LICENSE)
+Copyright (c) 2026 Nimra Abid
 
 ---
 
-##  Credits
+## 🙏 Credits
 
-- 3D Framework: [A-Frame](https://aframe.io) by Mozilla
-- Fonts: [Google Fonts](https://fonts.google.com) Playfair Display, DM Sans
-- Legal content: General public legal information compiled for educational purposes
-- Built for: [#75HER Challenge Hackathon 2026](https://createherfest.com) CreateHER Fest
+- Fonts: Google Fonts — Playfair Display, DM Sans
+- Legal content: General public legal information for educational purposes
+- Originally built for: #75HER Hackathon 2026 — CreateHER Fest
+- Finished with: GitHub Copilot — GitHub Finish-Up-A-Thon 2026
 
 ---
 
-> ⚠️ HerRights VR provides general legal information only not legal advice. Laws vary by country and region. Please consult a qualified lawyer for your specific situation.
+> ⚠️ HerRights provides general legal information only — not legal advice. Laws vary by country and region. Please consult a qualified lawyer for your specific situation.
